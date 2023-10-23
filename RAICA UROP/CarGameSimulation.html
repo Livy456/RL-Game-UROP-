@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" type='text/css' href="CarGameStyle.css">
+    
+    <title>RAICA Car Simulation Game</title>
+    <!-- <script>
+        // add in canvas object
+    </script> -->
+</head>   
+    
+<body>
+    <div class="header">
+        
+        <h1 id="game_title"> RAICA Car Simulation Game</h1>
+    </div>
+    <!--<image id= "car" src="carAvatar.png"></image>-->
+    <div id="simulation">
+        <canvas id="car_game_design" width="550" height="150"></canvas>
+        
+            <script src="carGameCode.js"></script>
+    </div>
+    <!--FIX THE GRID DISPLAY SO THE CONTAINERS DON'T LOOK WEIRD ON THE WEBSITE-->
+    <div id="Qtable">
+        <label style="color:black">Q TABLE</label>
+        <!--Future update will try to highlight one particular cell at a time
+            to help the middle schoolers to see which cell in the Q-learning 
+            process is being updated-->
+        <table style="width:100px">
+            <tr>
+                <th>States</th>
+                <th>Forward</th>
+                <th>Backward</th>
+                <th>Stop</th>
+              </tr>
+              <tr>
+                <td>Highway</td>
+                <!--Qtable Values for taking an action in the highway game state-->
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>Construction</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+    </div>
+    
+    <div id="Reward_table">
+        
+        <!-- <label>Reward Table</label> -->
+        <table>
+            <label style="color:black">REWARD TABLE</label>
+            <!--In order to distinguish between the data cells will need
+                to make an id for each one so that you can update the values
+                later on-->
+            <tr>
+                <td>States</td>
+                <td>Forward</td>
+                <td>Backward</td>
+                <td>Stop</td>
+            </tr>
+            <tr>
+                <td>Highway</td>
+                <td><input type="text" width="2px" height="2px" value="5"></td>
+                <td><input type="text" width="2px" height="2px" value="5"></td>
+                <td><input type="text" width="2px" height="2px" value="5"></td>
+            </tr>
+            <tr>
+                <td>Construction</td>
+                <td><input type="text" width="2px" height="2px" value="5"></td>
+                <td><input type="text" width="2px" height="2px" value="5"></td>
+                <td><input type="text" width="2px" height="2px" value="5"></td>
+            </tr>
+        </table>
+    </div>
+
+    <!--Makes a slider for the learning rate-->
+    <div id="learningRate">
+        <!--Can't use decimal values, too small for slider-->
+        <!--well divide the lr_slider element value by 10-->
+        <label><b>Learning Rate</b></label>
+        <input type="range" id="lr_slider" min="1" max="10" value="5">
+
+    </div>
+    <!--<div class="grid-container-simulation_zone">
+        <div id="tables">
+            
+
+            
+        
+        </div>
+
+    </div>-->
+    
+    <!-- <div class="footer">
+        <h1>This is the Footer</h1>
+
+    </div> -->
+    
+    <!--<hr color="black">-->
+    <!--<pre>
+        Welcome to the RAICA Reinforcement Learning Car Simulation Game! 
+        This game will allow you to train a car using Q-learning techniques. 
+        The goal of this game is to help the car safely travel from your house 
+        to your friend's house without crashing. You will have to help train 
+        the car to travel through a highway, street lights, construction work, 
+        and some crosswalks. If the car crashes into a person or another car 
+        you lose and will have to retrain the car to avoid hitting a person or a car.
+
+        You will train the car by inputting the proper reward values for the reward table 
+        that will used during the Q-learning process to train the car to avoid crashing.
+
+        Good luck getting to your friends house!
+        
+        <thead>Not sure what this element does???</thead>
+    </pre>-->
+    <!---->
+    
+
+</body>
+
+
+</html>
