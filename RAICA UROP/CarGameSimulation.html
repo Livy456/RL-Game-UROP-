@@ -5,12 +5,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" type='text/css' href="CarGameStyle.css">
-    <script src="carGameCode.js"></script>
+    
     
     <title>RAICA Car Simulation Game</title>
-    <!-- <script>
-        // add in canvas object
-    </script> -->
+    
 </head>   
     
 <body>
@@ -21,8 +19,35 @@
     <!--<image id= "car" src="carAvatar.png"></image>-->
     <div id="simulation">
         <canvas id="car_game_design" width="550" height="150"></canvas>
-        
-            <!-- <script src="carGameCode.js"></script> -->
+            <!-- <script>
+                const canvas = document.getElementById("car_game_design");
+                const context = canvas.getContext("2d");
+                // document.write(context);
+                const lr_slider = document.getElementById("lr_slider"); // get the learning rate slider
+                const height = 150;
+                const width = 550;
+                // document.write(canvas.height);
+                var gameState = "highway";
+                // document.write(context);
+                // RESOLVED ERROR!!
+                context.fillStyle = "lime";
+                // document.write(parseInt(canvas.width/4));
+                context.fillRect(0, 0, width/4, height);
+                context.fillStyle = "lime";
+                context.fillRect(0, 0, width/4, height);
+                context.fillStyle = "lime";
+                context.fillRect(3*width/4, 0, width/4, height);
+                context.fillStyle = "#AFAFAF";
+                context.fillRect(width/4, 0, width/2, height);
+                // document.write(context);
+            </script> -->
+            <script src="simulationGame.js"></script>
+            <script src="simulationCar.js"></script>
+            <script src="simulationControls.js"></script>
+            <script src="simulationRoad.js"></script>
+            
+            
+            <!--WHENEVER RUNNING CODE MAKE SURE TO TYPE THE NAME OF HTML FILE INTO WINDOWS COMMAND PROMPT-->
     </div>
     <!--FIX THE GRID DISPLAY SO THE CONTAINERS DON'T LOOK WEIRD ON THE WEBSITE-->
     <div id="Qtable">
