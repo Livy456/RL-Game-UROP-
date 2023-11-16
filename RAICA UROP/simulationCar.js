@@ -1,4 +1,4 @@
-class Car{
+class SimulationCar{
     constructor(x, y, width, height, player)
     {
         this.x = x;           // x position of car
@@ -7,76 +7,53 @@ class Car{
         this.height = height; // height of car
         this.player = player; // boolean value indicating if car is player or not
 
-        this.speed = 0;
-        this.acceleration = 0.2;
-        this.maxSpeed = 4;
-        this.friction = 0.1;
-        this.angle = 0;
+        this.car_sensors = new Sensor(this); // creates sensor object using car instance
 
         this.controls = new Controls();
     }
 
-    movePosition(){
-        document.write("I am in the car move position method javascript");
-        if (this.controls.forward)
+    movePosition(road_x_boundaries)
+    {
+        // moves the car object's x and y positions
+        // bound the carPlayer to the grey road
+        // if (this.controls.forward && car.y > 0)
+        if (this.controls.forward && car.y > -500)
         {
-            this.y-=2;
-            // this.speed += this.acceleration;
+            this.y-=1;
         }
 
-        if (this.controls.right)
+        // bound the carPlayer to the grey road
+        if (this.controls.right && car.x +car.width < (3*WIDTH/4) - HIGHWAY_LINE_WIDTH)
+        // if (this.controls.right && car.x +car.width < (3*WIDTH/4))
         {
             this.x+=2;
         }
 
-        if (this.controls.backward)
+        // bound the carPlayer to the grey road
+        // if (this.controls.backward && car.y + car.height <= HEIGHT)
+        if (this.controls.backward && car.y + car.height <= 500)
         {
-            this.y+=2;
-            // this.speed -= this.acceleration;
+            this.y+=1;
         }
 
-        if (this.controls.left)
+        // bound the carPlayer to the grey road
+        //if (this.controls.left && car.x > (WIDTH/4) + HIGHWAY_LINE_WIDTH)
+        if (this.controls.left && car.x > (WIDTH/4))
         {
             this.x-=2;
         }
-        
-        // upper bound speed of car
-        if (this.speed > this.maxSpeed)
-        {
-            this.speed = this.maxSpeed;
-        }
-
-        if (this.speed < -this.maxSpeed/2)
-        {
-            this.speed = -this.maxSpeed/2
-        }
-
-        if (this.speed > 0)
-        {
-            this.speed-= this.friction;
-        }
-
-        if (this.speed < 0)
-        {
-            this.speed += this.friction;
-        }
-
-        if (Math.abs(this.speed) < this.friction)
-        {
-            this.speed = 0;
-        }
+        //document.write("I am in the move player method");
+        this.car_sensors.createSensor(road_x_boundaries)
+        // document.write("I am in the move player method", this.car_sensors.sensors);
     }
 
-    draw(ctx)
+    drawPlayer(ctx)
     {
-        // ctx.beginPath();
+        // document.write("I am in the draw player method");
         ctx.fillStyle = "black";
         ctx.fillRect(this.x, this.y, this.width, this.height);
-        // ctx.fillRect(this.x - this.width,
-        //          this.y - this.height,
-        //          this.width,
-        //          this.height);
-        // ctx.fillrE();
+
+        this.car_sensors.drawSensor(ctx);
     }
 
 }

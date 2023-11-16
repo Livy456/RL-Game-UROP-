@@ -4,7 +4,6 @@ class Controls{
         this.backward = false;
         this.right = false;
         this.left = false;
-        // this.keys = {}
         this.#addKeyboardListeners();
     }
 
@@ -12,61 +11,51 @@ class Controls{
     // to make private methods use # in front of the method
     #addKeyboardListeners()
     {
-        // if a a key on the keyboard is pressed down then set key press to true
-        // document.addEventListener("keydown", (event) => {
-        //     keys[event.key] = true;
-        // });
-        document.write("I am in the controls add keyboard listerners method javascript");
         document.onkeydown = (event) => {
             // does case work to switch the keyboard attributes to true, indicates key is being pressed
             switch (event.key)
             {
-                case "ArrowUp":
+                case "w":
                     this.forward = true;
                     break;
-                case "ArrowDown":
+                case "s":
                     this.backward = true;
                     break;
                 
-                case "ArrowLeft":
+                case "a":
                     this.left = true;
                     break;
                 
-                case "ArrowRight":
+                case "d":
                     this.right = true;
                     break;
             }
         };
-        // console.table(this); // prints out the motions of the car
+        // console.table(this); // debugging
 
-        // if a a key on the keyboard is up, means not pressed, set key press to false
-        // document.addEventListener("keyup", (event)=> {
-        //     keys[event.key] = false;
-        // });
-        console.table(this); // prints out the motions of the car
         document.onkeyup = (event) => {
             // does case work to switch the keyboard attributes to false, indicates key not pressed
             switch (event.key)
             {
-                case "ArrowUp":
+                case "w":
                     this.forward = false;
                     break;
                 
-                case "ArrowDown":
+                case "s":
                     this.backward = false;
                     break;
                 
-                case "ArrowRight":
+                case "d":
                     this.right = false;
                     break;
                 
-                case "ArrowLeft":
+                case "a":
                     this.left = false;
                     break;
             }
 
         }
-        console.table(this);
+        // console.table(this); // debugging
     }
 
 }

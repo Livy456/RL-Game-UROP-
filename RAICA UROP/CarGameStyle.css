@@ -1,6 +1,7 @@
 body{
     background-color: powderblue;
     color:white;
+    /* overflow:hidden; */
 }
 
 .header #game_title{
