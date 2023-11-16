@@ -13,13 +13,13 @@ class Road{
         this.bottomRoad = 550;      // if you make this number too big, the dashed lines disappear
 
         // const top_left_road = {x: this.left, y: this.top};
-        const top_left_road = {x: this.left, y: 0};
+        const top_left_road = {x: this.left, y: this.topRoad};
         // const bottom_left_road = {x: this.left, y: this.bottom};
-        const bottom_left_road = {x: this.left, y: HEIGHT};
+        const bottom_left_road = {x: this.left, y: this.bottomRoad};
         // const top_right_road = {x: this.right, y: this.top};
-        const top_right_road = {x: this.right, y: 0};
+        const top_right_road = {x: this.right, y: this.topRoad};
         // const bottom_right_road = {x: this.right, y: this.bottom};
-        const bottom_right_road = {x: this.right, y: HEIGHT};
+        const bottom_right_road = {x: this.right, y: this.bottomRoad};
 
         this.road_boundaries = [[top_left_road, bottom_left_road],
                                   [top_right_road, bottom_right_road]];
@@ -58,7 +58,7 @@ class Road{
             
             // calculates the number of dashed lines to draw
             const space = 10;
-            const dash_line_height = 10;
+            const dash_line_height = 20;
             const num_dash_lines = 500 / dash_line_height;
 
             for (let j = 0; j < num_dash_lines; j++)
