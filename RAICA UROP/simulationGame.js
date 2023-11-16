@@ -10,10 +10,6 @@ const HEIGHT = 150;
 // canvas.width = 500;
 // canvas.height = 150;
 
-
-// setting up the default road look
-// WILL PUT INTO A METHOD LATER
-
 // for some reason the image is not being added to the canvas 
 var carImage = new Image(); // creates a new image object
 carImage.src = 'carAvatar.png';
@@ -22,7 +18,7 @@ carImage.src = 'carAvatar.png';
 // THAT THE CAR CAN TAKE DURING THE CAR SIMULATION
 const HIGHWAY_LINE_WIDTH = 5;
 const HIGHWAY_LANE_COUNT = 3;
-const CAR_WIDTH = 25;
+const CAR_WIDTH = 35;
 const CAR_HEIGHT = 15;
 
 // Instantiate Objects for game
@@ -40,20 +36,18 @@ const car = new SimulationCar(WIDTH/2 - 10, HEIGHT/2, CAR_WIDTH, CAR_HEIGHT, tru
 function animateGame()
 {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height)
-    // FIGURE OUT HOW TO TRANSLATE THE DASHED LINES SO IT LOOKS LIKE THE HIGHWAY IS MOVING
-    // RIGHT NOW THE DASHED LINES TURN INTO SOLID LINES WHEN TRYING TO TRANSLATE THE SCREEN
-    // IN RELATION TO THE CAR
     
-    oldx = car.x
-    oldy = car.y
-    
-    car.movePosition(highway.road_x_boundaries); // moves x and y position of car object
+    // document.write("In animate method in main file");
+    car.movePosition(highway.road_boundaries, highway.topRoad, highway.bottomRoad); // moves x and y position of car object
     // make the highway seem like it's moving
     context.save();
-    context.translate(0, -car.y + HEIGHT / 2); // CAR GETS STUCK IN THE MIDDLE OF THE SCREEN SINCE
-                                                  // THE CAVAS IS TRANSLATED TO THAT POINT IN THE SCREEN 
+    context.translate(0, -car.y + 3*HEIGHT / 4); // WEIRD 1 PIXEL HORIZONTAL BLUE LINE FORMS ON THE CANVAS
+    // context.translate(0, -car.y + HEIGHT / 2) // LOOKS NORMAL
+                                 
     highway.drawHighwayRoad(context);   // draws the highway state for the game
+    // document.write("In animate method in main file");
     car.drawPlayer(context);    // redraws the car object on the canvas
+    // document.write("In animate method in main file");
     context.restore();
     requestAnimationFrame(animateGame); // repeatedly runs function, to make the game appear animated    
 }

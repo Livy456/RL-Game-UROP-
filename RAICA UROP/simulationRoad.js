@@ -12,7 +12,17 @@ class Road{
         this.topRoad = -550;        // if you make this number too small, the dashed lines disappear
         this.bottomRoad = 550;      // if you make this number too big, the dashed lines disappear
 
-        this.road_x_boundaries = [];
+        // const top_left_road = {x: this.left, y: this.top};
+        const top_left_road = {x: this.left, y: 0};
+        // const bottom_left_road = {x: this.left, y: this.bottom};
+        const bottom_left_road = {x: this.left, y: HEIGHT};
+        // const top_right_road = {x: this.right, y: this.top};
+        const top_right_road = {x: this.right, y: 0};
+        // const bottom_right_road = {x: this.right, y: this.bottom};
+        const bottom_right_road = {x: this.right, y: HEIGHT};
+
+        this.road_boundaries = [[top_left_road, bottom_left_road],
+                                  [top_right_road, bottom_right_road]];
     }
 
     // centerOfLane(lane_number)
@@ -26,7 +36,6 @@ class Road{
     {
         ctx.lineWidth = HIGHWAY_LINE_WIDTH;
         ctx.strokeStyle = "white";
-        this.road_x_boundaries = [this.left];
 
         // draws the default highway road without the white dashed lines
         context.fillStyle = "lime";
@@ -46,7 +55,6 @@ class Road{
         for(let i=1; i < this.number_lanes; i++)
         {
             const x_position = linear_interpolation(this.left, this.right, i/this.number_lanes); // shifts the x value across the canvas
-            this.road_x_boundaries.push(x_position);
             
             // calculates the number of dashed lines to draw
             const space = 10;
@@ -66,6 +74,5 @@ class Road{
             // ctx.lineTo(x_position, 500);
             // ctx.stroke(); 
         }
-        this.road_x_boundaries.push(this.right);
     }
 }
