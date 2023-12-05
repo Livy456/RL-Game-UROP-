@@ -6,7 +6,7 @@ class Sensor
         //this.num_sensors = 30;
         // this.num_sensors = 20;
         this.num_sensors = 5;
-        this.sensor_length = 50;
+        this.sensor_length = 30;
         this.sensor_arc = Math.PI/4; // 90 degree angle between sensors
         // this.sensor_arc = Math.PI*2;
         // ADD SENSORS IN THE BACK SO THAT A CAR DOES NOT STOP IF A CAR IS BEHIND IT
@@ -20,11 +20,16 @@ class Sensor
         
         for(let i=0; i < this.num_sensors; i++)
         {
+            // change this so the sensors go all the way around the car
             const sensorAngle = linear_interpolation(this.sensor_arc/1, -this.sensor_arc/1, i/(this.num_sensors-1)); 
             
-            const start_sensor_segment = {x: this.car.x+(this.car.width/2), y:this.car.y+(this.car.height/3)}; // the sensor starts at the car object x and y position
-            const end_sensor_segment = {x: this.car.x + (this.car.width/2) - Math.sin(sensorAngle)*this.sensor_length,
-                                        y: this.car.y +(this.car.height/3) - Math.cos(sensorAngle)*this.sensor_length};
+            const start_sensor_segment = {x: this.car.car_points[0].x-this.car.width/2,
+                                          y: this.car.car_points[0].y}
+            const end_sensor_segment = {x: this.car.car_points[0].x - this.car.width/2- Math.sin(sensorAngle) * this.sensor_length,
+                                        y: this.car.car_points[0].y - Math.cos(sensorAngle) * this.sensor_length};       
+            // const start_sensor_segment = {x: this.car.x+(this.car.width/2), y:this.car.y+(this.car.height/8)}; // the sensor starts at the car object x and y position
+            // const end_sensor_segment = {x: this.car.x + (this.car.width/2) - Math.sin(sensorAngle)*this.sensor_length,
+            //                             y: this.car.y +(this.car.height/3) - Math.cos(sensorAngle)*this.sensor_length};
 
             this.sensors.push([start_sensor_segment, end_sensor_segment]); // adds the sensor line segment 
         }
@@ -65,6 +70,7 @@ class Sensor
         { 
             return null; // no intersections
         }
+
         else
         {
             let offsets = [];
@@ -91,6 +97,16 @@ class Sensor
 
             // finds the closest object that the car is sensing
             const closest_object = all_intersections.find(element => element.offset === minimum_offset);
+            
+            
+            
+            // DEBUGGING STATEMENT BEGINS
+            // document.write("x pos: ", closest_object.x, " y pos: ", closest_object.y, " offset: ", closest_object.offset);
+            
+            // calculate the slope and see if it is the same throughout, if there is a positive slope and negative
+            // slope then you know that the intersection method is getting both the leftmost and rightmost sensors
+            // and will need to fix the utils intersection function
+            // DEBUGGING STATEMENT ENDS
             return closest_object
         }
     }
@@ -98,7 +114,7 @@ class Sensor
     // draws each of the sensors at an angle pertruding from the car
     drawSensor(ctx)
     {
-        for(let i=0; i< this.num_sensors; i++)
+        for(let i=0; i < this.num_sensors; i++)
         {
             const start = this.sensors[i][0];
             let end = this.sensors[i][1]; // can be modified
@@ -107,6 +123,14 @@ class Sensor
             if (this.sensor_readings[i])
             {
                 end = this.sensor_readings[i]; // sets end to the object -> x, y, offset
+                // document.write("sensor reading, end.x: ", end.x, " end.y: ", end.y);
+                // colors the intersection region of sensor red 
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "red";
+                ctx.moveTo(previous_end.x, previous_end.y);
+                ctx.lineTo(end.x, end.y);
+                ctx.stroke();
             }
 
             ctx.beginPath();
@@ -118,13 +142,7 @@ class Sensor
 
             // THE SENSOR DETECTS OBJECTS, HOWEVER BOTH ENDS OF THE SENSOR TURN RED DESPITE
             // ONLY ONE SIDE ACTUALLY INTERSECTING WITH THE OBJECT
-
-            ctx.beginPath();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "red";
-            ctx.moveTo(previous_end.x, previous_end.y);
-            ctx.lineTo(end.x, end.y);
-            ctx.stroke();
+            // DEBUG THIS SECTION
         }
     }
 }

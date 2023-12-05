@@ -29,5 +29,30 @@ function getIntersection(start, end, left_boundary, right_boundary)
                     y: linear_interpolation(start.y, end.y, t),
                     offset: t}
         }
-    }    
+    }
+    return null;    
+}
+
+function objectIntersection(player, object2)
+{
+    // document.write("I am in the object intersection method!!");
+    for (let i = 0; i < player.length; i++)
+    {
+        for (let j = 0; j < object2.length; j++)
+        {
+             
+            const intersect = getIntersection(
+                player[i], 
+                player[(i+1)%player.length],
+                object2[j],
+                object2[(j+1)%object2.length]
+            );
+            
+            if (intersect)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }

@@ -1,10 +1,19 @@
 class Controls{
-    constructor(){
+    constructor(isPlayer){
         this.forward = false;
         this.backward = false;
         this.right = false;
         this.left = false;
-        this.#addKeyboardListeners();
+
+        if(isPlayer)
+        {
+            this.#addKeyboardListeners();
+        }
+        else
+        {
+            this.forward = true;
+        }
+        
     }
 
     // might want to make this a private method

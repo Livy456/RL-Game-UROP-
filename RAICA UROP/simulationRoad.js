@@ -9,16 +9,12 @@ class Road{
         this.left = WIDTH/4;
         this.right = 3*WIDTH/4; 
 
-        this.topRoad = -550;        // if you make this number too small, the dashed lines disappear
-        this.bottomRoad = 550;      // if you make this number too big, the dashed lines disappear
+        this.topRoad = -1000000;        // if you make this number too small, the dashed lines disappear
+        this.bottomRoad = 1000000;      // if you make this number too big, the dashed lines disappear
 
-        // const top_left_road = {x: this.left, y: this.top};
         const top_left_road = {x: this.left, y: this.topRoad};
-        // const bottom_left_road = {x: this.left, y: this.bottom};
         const bottom_left_road = {x: this.left, y: this.bottomRoad};
-        // const top_right_road = {x: this.right, y: this.top};
         const top_right_road = {x: this.right, y: this.topRoad};
-        // const bottom_right_road = {x: this.right, y: this.bottom};
         const bottom_right_road = {x: this.right, y: this.bottomRoad};
 
         this.road_boundaries = [[top_left_road, bottom_left_road],
@@ -59,7 +55,7 @@ class Road{
             // calculates the number of dashed lines to draw
             const space = 10;
             const dash_line_height = 20;
-            const num_dash_lines = 500 / dash_line_height;
+            const num_dash_lines = 1000000 / dash_line_height;
 
             for (let j = 0; j < num_dash_lines; j++)
             {
@@ -67,12 +63,7 @@ class Road{
                 ctx.fillStyle = "white";
                 ctx.fillRect(x_position, this.topRoad + y_position, this.width, this.height);
             }    
-            // ctx.setLineDash([10, 10]); // creates dashed line of 10 pixels and then a space of 10 pixels between dashes
-            // ctx.moveTo(x_position, this.topRoad);
-            // ctx.moveTo(x_position, -500);
-            // // ctx.lineTo(x_position, this.bottomRoad);
-            // ctx.lineTo(x_position, 500);
-            // ctx.stroke(); 
+
         }
     }
 }
