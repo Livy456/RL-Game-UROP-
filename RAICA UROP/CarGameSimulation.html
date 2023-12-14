@@ -60,16 +60,21 @@
         <!--Future update will try to highlight one particular cell at a time
             to help the middle schoolers to see which cell in the Q-learning 
             process is being updated-->
-        <table style="width:500px">
+        <table style="width:500px" id="q_table">
+            <!-- <tr id="actions"> -->
             <tr>
                 <th>State, Action</th>
                 <th>Forward</th>
                 <th>Backward</th>
+                <th>Left</th>
+                <th>Right</th>
                 <th>Stop</th>
             </tr>
             <tr>
                 <td>Car Detected</td>
                 <!--Qtable Values for taking an action in the highway game state-->
+                <td>0</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -79,9 +84,13 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
+                <td>0</td>
             </tr>
             <tr>
                 <td>Collision</td>
+                <td>0</td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
@@ -91,19 +100,21 @@
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
+                <td>0</td>
+                <td>0</td>
             </tr>
         </table>    
     </div>
     
-    <div id="Reward_table">
+    <div id="RewardTable">
         
         <!-- <label>Reward Table</label> -->
-        <table>
+        <table id="reward_table">
             <label style="color:black">REWARD TABLE</label>
             <!--In order to distinguish between the data cells will need
                 to make an id for each one so that you can update the values
                 later on-->
-            <tr>
+            <tr >
                 <td>State, Action</td>
                 <td>Forward</td>
                 <td>Backward</td>
@@ -151,7 +162,7 @@
         <!--Can't use decimal values, too small for slider-->
         <!--well divide the lr_slider element value by 10-->
         <label><b>Learning Rate</b></label>
-        <input type="range" id="lr_slider" min="1" max="10" value="5">
+        <input type="range" id="lr_slider" min="1" max="100" value="50">
 
     </div>
     <!--<div class="grid-container-simulation_zone">

@@ -8,6 +8,8 @@ class SimulationCar{
         
         this.player = player; // boolean value indicating if car is player or not
         this.damaged = false;   // confirms whether the car is damaged or not
+        
+        // this.learning = reinforcementLearning(); // A LOT OF ERROR PRODUCED FROM THE REINFORCEMENT LEARNING CLASS
 
         this.car_sensors = new Sensor(this); // creates sensor object using car instance
         this.controls = new Controls(player); // no controls for non player cars
@@ -122,6 +124,7 @@ class SimulationCar{
             }
 
             // makes other car object move at half the speed of player
+            // traffic can only move forward 
             else
             {
                 this.y-=0.5;
