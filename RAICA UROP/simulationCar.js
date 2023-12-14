@@ -11,6 +11,22 @@ class SimulationCar{
 
         this.car_sensors = new Sensor(this); // creates sensor object using car instance
         this.controls = new Controls(player); // no controls for non player cars
+        // this.car_points = this.#createPoints();
+        this.car_points = [
+                            {x: this.x - this.width/2,
+                             y: this.y - this.height/2},
+                            {x: this.x + this.width/2,
+                             y: this.y - this.height/2},
+                            {x: this.x - this.width/2,
+                             y: this.y + this.height/2},
+                            {x: this.x + this.width/2,
+                             y: this.y + this.height/2}
+        ]
+        // car points on canvas
+        // top left: (this.x - this.width/2, this.y - this.height/2)
+        // top right: (this.x + this.width/2, this.y - this.height/2)
+        // bottom left: (this.x - this.width/2, this.y + this.height/2)
+        // bottom right: (this.x + this.width/2, this.y + this.height/2)
                                     
     }
 
@@ -62,11 +78,13 @@ class SimulationCar{
         // checks if car has hit the road borders
         for(let i = 0; i < road_boundaries.length; i++)
         {
-            
+            // car_points is list of objects corresponding to x, y coordinates of following car points
+            // top left, top right, bottom left, bottom right
             if (objectIntersection(this.car_points, road_boundaries[i]))
             {
                 return true;
             }
+            // continue;
 
         }
         return false;
@@ -89,7 +107,7 @@ class SimulationCar{
             // makes other car object move at half the speed of player
             else
             {
-                this.y-=0.35;
+                this.y-=0.5;
             }
         }
 
@@ -116,7 +134,7 @@ class SimulationCar{
         }
     }
 
-    updateCar(road_boundaries)
+    updateCar(road_boundaries, other_players)
     {
         // stops the car from moving past the road boundaries
         if(!this.damaged)
@@ -125,8 +143,11 @@ class SimulationCar{
             this.car_points = this.#createPoints();
             this.damaged = this.#isDamaged(road_boundaries);
         }
+        // this.#movePosition();
+        // this.car_points = this.#createPoints();
+        // this.damaged = this.#isDamaged(road_boundaries);
 
-        this.car_sensors.createSensor(road_boundaries)
+        this.car_sensors.updateSensor(road_boundaries)
     }
 
     drawPlayer(ctx)

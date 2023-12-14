@@ -22,10 +22,12 @@ const CAR_WIDTH = 35;
 const CAR_HEIGHT = 15;
 
 // Instantiate Objects for game
-const highway = new Road(WIDTH/2, 10, HIGHWAY_LANE_COUNT, "highway"); // instantiates a road instance
-const car = new SimulationCar(WIDTH/2 - 10, HEIGHT/2, CAR_WIDTH, CAR_HEIGHT, true); // put the car in the middle of the page
+const highway = new Road(WIDTH/2, 10, HIGHWAY_LANE_COUNT, "highway", CAR_WIDTH); // instantiates a road instance
+const car = new SimulationCar(WIDTH/2+10, HEIGHT/2, CAR_WIDTH, CAR_HEIGHT, true); // put the car in the middle of the page
 const traffic = [
-    new SimulationCar(WIDTH/2 - 10, -HEIGHT/2, CAR_WIDTH, CAR_HEIGHT, false),
+    new SimulationCar(WIDTH/2 + 10, -HEIGHT/2, CAR_WIDTH, CAR_HEIGHT, false),
+    new SimulationCar(WIDTH/2 + 10, -3*HEIGHT/2, CAR_WIDTH, CAR_HEIGHT, false),
+    new SimulationCar(WIDTH/2 + 10, HEIGHT/8, CAR_WIDTH, CAR_HEIGHT, false),
 ];
 // const x_position_middle_lane_start = linear_interpolation(highway.left, highway.right, 1);
 // const x_center_position = x_position_middle_lane_start - (WIDTH / highway.number_lanes); 
@@ -39,10 +41,10 @@ function animateGame()
     
     for(let i = 0; i < traffic.length; i++)
     {
-        traffic[i].updateCar(highway.road_boundaries);
+        traffic[i].updateCar(highway.road_boundaries, []);
     }
 
-    car.updateCar(highway.road_boundaries); // updates the position of the car
+    car.updateCar(highway.road_boundaries, traffic); // updates the position of the car
     // car.movePosition(highway.road_boundaries, highway.topRoad, highway.bottomRoad); // moves x and y position of car object
 
 

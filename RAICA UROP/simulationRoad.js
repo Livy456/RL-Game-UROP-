@@ -1,5 +1,5 @@
 class Road{
-    constructor(x, width, num_lanes, type)
+    constructor(x, width, num_lanes, type, car_width)
     {
         this.x = x;
         this.width = width;
@@ -12,21 +12,19 @@ class Road{
         this.topRoad = -1000000;        // if you make this number too small, the dashed lines disappear
         this.bottomRoad = 1000000;      // if you make this number too big, the dashed lines disappear
 
-        const top_left_road = {x: this.left, y: this.topRoad};
-        const bottom_left_road = {x: this.left, y: this.bottomRoad};
-        const top_right_road = {x: this.right, y: this.topRoad};
-        const bottom_right_road = {x: this.right, y: this.bottomRoad};
+        const top_left_road = {x: this.left - car_width - 5, y: this.topRoad};
+        const bottom_left_road = {x: this.left - car_width - 5, y: this.bottomRoad};
+        const top_right_road = {x: this.right + car_width + 5, y: this.topRoad};
+        const bottom_right_road = {x: this.right + car_width + 5, y: this.bottomRoad};
+        
+        // const top_left_road = {x: this.left - car_width - 5, y: -550};
+        // const bottom_left_road = {x: this.left - car_width - 5, y: 550};
+        // const top_right_road = {x: this.right + car_width + 5, y: -550};
+        // const bottom_right_road = {x: this.right + car_width + 5, y: 550};
 
         this.road_boundaries = [[top_left_road, bottom_left_road],
                                   [top_right_road, bottom_right_road]];
     }
-
-    // centerOfLane(lane_number)
-    // {
-    //     const lane_width = this.width/this.number_lanes; // finds width of lane (width of highway / number of lanes)
-
-    //     return this.left + lane_width/2 //+ lane_number*lane_width; // returns the center position of specific lane numebr
-    // }
 
     drawHighwayRoad(ctx)
     {
@@ -55,7 +53,8 @@ class Road{
             // calculates the number of dashed lines to draw
             const space = 10;
             const dash_line_height = 20;
-            const num_dash_lines = 1000000 / dash_line_height;
+            const half_height_road = this.bottomRoad;   // using total height of the road would make the game too slow
+            const num_dash_lines = half_height_road / dash_line_height; 
 
             for (let j = 0; j < num_dash_lines; j++)
             {
@@ -63,7 +62,6 @@ class Road{
                 ctx.fillStyle = "white";
                 ctx.fillRect(x_position, this.topRoad + y_position, this.width, this.height);
             }    
-
         }
     }
 }
