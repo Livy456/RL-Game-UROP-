@@ -12,37 +12,40 @@ class SimulationCar{
         this.car_sensors = new Sensor(this); // creates sensor object using car instance
         this.controls = new Controls(player); // no controls for non player cars
         // this.car_points = this.#createPoints();
+        // if (player)
+        // {
         this.car_points = [
                             {x: this.x - this.width/2,
-                             y: this.y - this.height/2},
+                            y: this.y - this.height/2}, // top left point of car
                             {x: this.x + this.width/2,
-                             y: this.y - this.height/2},
+                            y: this.y - this.height/2}, // top right point of car
                             {x: this.x - this.width/2,
-                             y: this.y + this.height/2},
+                            y: this.y + this.height/2}, // bottom left point of car
                             {x: this.x + this.width/2,
-                             y: this.y + this.height/2}
-        ]
-        // car points on canvas
-        // top left: (this.x - this.width/2, this.y - this.height/2)
-        // top right: (this.x + this.width/2, this.y - this.height/2)
-        // bottom left: (this.x - this.width/2, this.y + this.height/2)
-        // bottom right: (this.x + this.width/2, this.y + this.height/2)
-                                    
+                            y: this.y + this.height/2}  // bottom right point of car
+        ];
+        // } 
+        // else
+        // {
+        //     this.car_points = [
+        //         {x: this.x - this.width/2,
+        //         y: this.y - this.height/2},
+        //         {x: this.x + this.width/2,
+        //         y: this.y - this.height/2},
+        //         {x: this.x - this.width/2,
+        //         y: this.y + this.height/2},
+        //         {x: this.x + this.width/2,
+        //         y: this.y + this.height/2}
+        //     ];
+        // }   
+        
+        // might have to change the points of the car to see if this changes  
+        // when the player car determines when the intersection occurs
     }
 
     #createPoints()
     {
         const points = [];
-
-        // let top_left = {x: this.x, y:this.y};
-        // let bottom_left = {x: this.x, y: this.y + this.height};
-        // let top_right = {x: this.x + this.width, y: this.y};
-        // let bottom_right = {x: this.x + this.width, y: this.y + this.height};
-
-        // points.push(top_left);
-        // points.push(bottom_left);
-        // points.push(top_right);
-        // points.push(bottom_right);
         
         // calculates out the points radius of the car
         const radius = Math.hypot(this.width, this.height)/2;
@@ -72,10 +75,9 @@ class SimulationCar{
         return points
     }
 
-    #isDamaged(road_boundaries)
+    #isDamaged(road_boundaries, traffic)
     {
-        // document.write("in is damaged function");
-        // checks if car has hit the road borders
+        // checks if car has hit any of the road borders
         for(let i = 0; i < road_boundaries.length; i++)
         {
             // car_points is list of objects corresponding to x, y coordinates of following car points
@@ -87,7 +89,22 @@ class SimulationCar{
             // continue;
 
         }
+
+        // checks if the player car collided with traffic car
+        for (let i=0; i < traffic.length; i++)
+        {
+            // checks if the player car collides with any of the trafic cars
+            // if(trafficIntersection(this.car_points, traffic[i].car_points, this))
+            // {
+            //     return true;
+            // }
+            if (objectIntersection(this.car_points, traffic[i].car_points))
+            {
+                return true;
+            }
+        }
         return false;
+
     }
 
     // movePosition(road_boundaries, top, bottom)
@@ -134,20 +151,30 @@ class SimulationCar{
         }
     }
 
-    updateCar(road_boundaries, other_players)
+    updateCar(road_boundaries, traffic)
     {
+        // document.write("updating car!!");
         // stops the car from moving past the road boundaries
         if(!this.damaged)
         {
             this.#movePosition();
             this.car_points = this.#createPoints();
-            this.damaged = this.#isDamaged(road_boundaries);
+            this.damaged = this.#isDamaged(road_boundaries, traffic);
+            // if (this.player){
+            // document.write("car class, updateCar function, not damaged!!");}
         }
         // this.#movePosition();
         // this.car_points = this.#createPoints();
         // this.damaged = this.#isDamaged(road_boundaries);
+        
 
-        this.car_sensors.updateSensor(road_boundaries)
+        if (this.player)
+        {
+            // document.write("before updating car sensor in car file, update car method");
+            this.car_sensors.updateSensor(road_boundaries, traffic);
+            // document.write("car class, updateCar function, I am updating the player car!!");
+        }
+        // document.write("car class, update car method, end of the updating car!!");
     }
 
     drawPlayer(ctx)
@@ -176,7 +203,15 @@ class SimulationCar{
 
     drawTraffic(ctx)
     {
-        ctx.fillStyle = "blue";
+        if (this.damaged)
+        {
+            ctx.fillStyle = "red";
+        }
+        else
+        {
+            ctx.fillStyle = "blue";    
+        }
+        // ctx.fillStyle = "blue";
         ctx.beginPath();
         ctx.moveTo(this.car_points[0].x, this.car_points[0].y);
 
@@ -186,5 +221,4 @@ class SimulationCar{
         }
         ctx.fill();
     }
-
 }

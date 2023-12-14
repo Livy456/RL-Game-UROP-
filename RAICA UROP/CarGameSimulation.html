@@ -60,26 +60,39 @@
         <!--Future update will try to highlight one particular cell at a time
             to help the middle schoolers to see which cell in the Q-learning 
             process is being updated-->
-        <table style="width:100px">
+        <table style="width:500px">
             <tr>
-                <th>States</th>
+                <th>State, Action</th>
                 <th>Forward</th>
                 <th>Backward</th>
                 <th>Stop</th>
-              </tr>
-              <tr>
-                <td>Highway</td>
+            </tr>
+            <tr>
+                <td>Car Detected</td>
                 <!--Qtable Values for taking an action in the highway game state-->
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-              </tr>
-              <tr>
-                <td>Construction</td>
+            </tr>
+            <tr>
+                <td>Road Border Detected</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-              </tr>
+            </tr>
+            <tr>
+                <td>Collision</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Nothing Detected</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        </table>    
     </div>
     
     <div id="Reward_table">
@@ -91,7 +104,7 @@
                 to make an id for each one so that you can update the values
                 later on-->
             <tr>
-                <td>States</td>
+                <td>State, Action</td>
                 <td>Forward</td>
                 <td>Backward</td>
                 <td>Left</td>
@@ -99,15 +112,31 @@
                 <td>Stop</td>
             </tr>
             <tr>
-                <td>Highway</td>
-                <td><input type="text" width="2px" height="2px" value="15"></td>
+                <td>Car Detected</td>
+                <td><input type="text" width="2px" height="2px" value="-5"></td>
+                <td><input type="text" width="2px" height="2px" value="-5"></td>
                 <td><input type="text" width="2px" height="2px" value="5"></td>
                 <td><input type="text" width="2px" height="2px" value="5"></td>
+                <td><input type="text" width="2px" height="2px" value="-2"></td>
+            </tr>
+            <tr>
+                <td>Road Border Detected</td>
                 <td><input type="text" width="2px" height="2px" value="5"></td>
+                <td><input type="text" width="2px" height="2px" value="5"></td>
+                <td><input type="text" width="2px" height="2px" value="-5"></td>
+                <td><input type="text" width="2px" height="2px" value="-5"></td>
                 <td><input type="text" width="2px" height="2px" value="5"></td>
             </tr>
             <tr>
-                <td>Construction</td>
+                <td>Collision</td>
+                <td><input type="text" width="2px" height="2px" value="-10"></td>
+                <td><input type="text" width="2px" height="2px" value="-10"></td>
+                <td><input type="text" width="2px" height="2px" value="-10"></td>
+                <td><input type="text" width="2px" height="2px" value="-10"></td>
+                <td><input type="text" width="2px" height="2px" value="0"></td>
+            </tr>
+            <tr>
+                <td>Nothing Detected</td>
                 <td><input type="text" width="2px" height="2px" value="15"></td>
                 <td><input type="text" width="2px" height="2px" value="5"></td>
                 <td><input type="text" width="2px" height="2px" value="5"></td>

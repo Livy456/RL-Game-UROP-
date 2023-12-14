@@ -3,40 +3,30 @@ class Sensor
     constructor(car)
     {
         this.car = car; // car object
-        this.num_sensors = 5; 
+        // this.num_sensors = 5; 
         // this.num_sensors = 3
-        // this.num_sensors = 30; 
-        this.sensor_length = 40;
-        this.sensor_arc = Math.PI/2; // 90 degree angle between sensors
-        // this.sensor_arc = Math.PI*2; // 360 degree 
+        this.num_sensors = 30; 
+        this.sensor_length = 50;
+        // this.sensor_arc = Math.PI/2; // 90 degree angle between sensors
+        this.sensor_arc = Math.PI*2; // 360 degree 
         this.sensor_readings = [];
         this.sensors = [];
     }
 
-    updateSensor(road_x_boundaries)
+    updateSensor(road_x_boundaries, traffic)
     {
         this.#createSensor();
         
         this.sensor_readings = [];
         // left road boundary x is 97.5
         // right road boundary x is 452.5
-        // document.write("left road boundary x: ", road_x_boundaries[0][0].x); 
-        // document.write("right road boundary x: ", road_x_boundaries[1][0].x);
 
         // will check if the sensor segment has intersected another object
         for(let i=0; i < this.num_sensors; i++)
         {
-            const sensor_reading = this.get_sensor_readings(this.sensors[i], road_x_boundaries);
+            // document.write("sensor readings!!");
+            const sensor_reading = this.get_sensor_readings(this.sensors[i], road_x_boundaries, traffic);
             this.sensor_readings.push(sensor_reading);
-            
-
-            // START OF DEBUGGING STATEMENTS!!!
-            // if (i %10 === 0)
-            // {
-            //     document.write("sensor start x: ", this.sensors[i][0].x, " sensor end x: ", this.sensors[i][1].x);
-            //     document.write("sensor reading: ", sensor_reading.x);
-            // }
-            // END OF DEBUGGING STATEMENTS!!!
         }
     }
     #createSensor()
@@ -50,23 +40,19 @@ class Sensor
 
             const start_sensor_segment = {x: this.car.car_points[0].x - this.car.width/2,
                                           y: this.car.car_points[0].y + this.car.height/2}
-            // const start_sensor_segment = {x: this.car.car_points[0].x,
-                                        //   y: this.car.car_points[0].y}
-
+            
             const end_sensor_segment = {x: this.car.car_points[0].x - this.car.width/2- Math.sin(sensorAngle) * this.sensor_length,
-            // const end_sensor_segment = {x: this.car.car_points[0].x - Math.sin(sensorAngle) * this.sensor_length,
                                         y: this.car.car_points[0].y + this.car.height/2 - Math.cos(sensorAngle) * this.sensor_length};       
             
             // const start_sensor_segment = {x: this.car.x, y: this.car.y}; // the sensor starts at the car object x and y position
             // const end_sensor_segment = {x: this.car.x - Math.sin(sensorAngle)*this.sensor_length,
             //                             y: this.car.y  - Math.cos(sensorAngle)*this.sensor_length};
 
-            // document.write("start sensor x: ", start_sensor_segment.x, " end sensor x: ", end_sensor_segment.x, "; ")
             this.sensors.push([start_sensor_segment, end_sensor_segment]); // adds the sensor line segment 
         }
     }
 
-    get_sensor_readings(sensor, road_boundaries)
+    get_sensor_readings(sensor, road_boundaries, traffic)
     {
         let all_intersections = [];
 
@@ -79,9 +65,7 @@ class Sensor
         //     // road_boundaries[i][0] => left side of road object
         //     // road_boundaries[i][1] => right side of road object
 
-        //     // [top_left_road, bottom_left_road] -> left boundary
-        //     // [top_right_road, bottom_right_road] -> right boundary
-        //     // document.write("sensors file, get sensor readings method!!!");
+        
         //     // const intersection = carIntersectRoad(sensor, road_boundaries[i][0], road_boundaries[i][1]);
         //     const intersection = getIntersection(sensor[0], sensor[1], road_boundaries[i][0], road_boundaries[i][1]);
         //     // const intersection = objectIntersection(sensor, road_boundaries[i])
@@ -95,17 +79,43 @@ class Sensor
         //         all_intersections.push(intersection);
         //     }
         // }
-        // document.write("before intersection check!!");
-        // const intersection = getIntersection(sensor[0], sensor[1], road_boundaries[0], road_boundaries[1]);
-        const intersection = carIntersectRoad(sensor, road_boundaries[0], road_boundaries[1], this.car);
-        // document.write("after intersection check!!");
+        
+        // checks for sensor intersection with the left or right road boundary
+        const intersection = playerCarIntersectRoad(sensor, road_boundaries[0], road_boundaries[1], this.car);
+        
         if (intersection)
         {
-            // document.write("car sensor class, get sensor reading method, intersection detected!!!");
             // intersection is being detected!!!
             all_intersections.push(intersection);
         }
 
+        for(let i=0; i<traffic.length;i++)
+        {
+            const traffic_car = traffic[i].car_points;
+
+            for (let j=0; j < traffic_car.length; j++)
+            {
+                const intersect = getIntersection(sensor[0], sensor[1], 
+                                                  traffic_car[j], traffic_car[(j+1)%traffic_car.length]);
+                if (intersect)
+                {
+                    all_intersections.push(intersect);
+                }
+            }
+        }
+
+        // WILL HAVE TO DEFINE MY OWN FUNCTION FOR DETECTING WHETHER OR NOT A PLAYER CAR COLLIDES
+        // WITH THE TRAFFIC CAR
+        // for (let i=0; i< traffic.length;i++)
+        // {
+        //     const collision = playerCarIntersect(sensor, traffic[0], traffic[1], this.car);
+            
+        //     if (intersection)
+        //     {
+        //         // intersection is being detected!!!
+        //         all_intersections.push(intersection);
+        //     }
+        // }
 
         // checks if sensors are intersecting no other objects
         if(all_intersections.length === 0)
@@ -140,15 +150,6 @@ class Sensor
             // finds the closest object that the car is sensing
             const closest_object = all_intersections.find(element => element.offset === minimum_offset);
 
-            // for some reason closest_object is detects one object on the far right and one on the far left
-            // document.write("closest object (x, y): ", closest_object.x, " , ", closest_object.y, "\n ");
-            // document.write("car (x, y): ", this.car.x, " , ", this.car.y, "\n ")
-            // document.write("\n");
-
-            
-            
-            
-
             return closest_object
         }
     }
@@ -164,9 +165,7 @@ class Sensor
             
             if (this.sensor_readings[i])
             {
-                // document.write("sensor has read an intersection!!");
                 end = this.sensor_readings[i]; // sets end to the object -> x, y, offset
-                // document.write("sensor reading, end.x: ", end.x, " end.y: ", end.y);
             }
 
             ctx.beginPath();
@@ -182,10 +181,7 @@ class Sensor
             ctx.strokeStyle = "red";
             ctx.moveTo(previous_end.x, previous_end.y);
             ctx.lineTo(end.x, end.y);
-            // ctx.moveTo(end.x, end.y);
-            // ctx.lineTo(previous_end.x, previous_end.y);
             ctx.stroke();
-
         }
     }
 }
