@@ -8,8 +8,9 @@ class SimulationCar{
         
         this.player = player; // boolean value indicating if car is player or not
         this.damaged = false;   // confirms whether the car is damaged or not
-        
-        // this.learning = reinforcementLearning(); // A LOT OF ERROR PRODUCED FROM THE REINFORCEMENT LEARNING CLASS
+        // document.write("Before I instantiated rl");
+        this.learning = new reinforcementLearning(); // A LOT OF ERROR PRODUCED FROM THE REINFORCEMENT LEARNING CLASS
+        // document.write("Before I instantiated rl");
 
         this.car_sensors = new Sensor(this); // creates sensor object using car instance
         this.controls = new Controls(player); // no controls for non player cars
@@ -158,6 +159,12 @@ class SimulationCar{
     {
         // document.write("updating car!!");
         // stops the car from moving past the road boundaries
+
+
+        // CREATE A RESET FUNCTION SO THAT IF THE CAR GETS INTO A COLLISION
+        // WITH ANOTHER CAR OR THE ROAD IT WILL RESET AT THE MIDDLE OF THE SIMULATION ENVIRONMENT
+        // OR MAKE ADD IN A BUTTON TO THE CANVAS WHENEVER this.damaged == true
+
         if(!this.damaged)
         {
             this.#movePosition();
@@ -175,6 +182,18 @@ class SimulationCar{
         {
             // document.write("before updating car sensor in car file, update car method");
             this.car_sensors.updateSensor(road_boundaries, traffic);
+            console.log(this.car_sensors);
+            // const directions = this.car_sensors;
+            
+
+            // DEFINE A NEW FUNCTION IN REINFORCEMENT LEARNING CLASS
+            // THAT DETECTS WHICH SENSORS HAVE READINGS AND USES THAT INFORMATION
+            // TO PROVIDE A POSITIVE OR NEGATIVE VALUE TO THE DIRECTION OF THE CAR
+            // IF FORWARD IS POSITIVE, THEN MAKE THE CAR MOVE FORWARD,
+            // IF BACKWARD IS POSITIVE, THEN MAKE THE CAR MOVE BACKWARD,
+            // IF RIGHT IS POSITIVE, THEN MAKE THE CAR MOVE RIGHT
+            // IF LEFT IS POSITIVE, THEN MAKE THE CAR MOVE LEFT
+
             // document.write("car class, updateCar function, I am updating the player car!!");
         }
         // document.write("car class, update car method, end of the updating car!!");
