@@ -91,15 +91,9 @@ function objectIntersection(player, object2)
 // come back to later and change parameter names!!!!
 function playerCarIntersectRoad(sensor, road_boundary_left, road_boundary_right, car)
 {
-    // document.write("road boundary left: ", road_boundary_left);
-    // document.write("road boundary right: ", road_boundary_right);
     
-    // if (typeof road_boundary_left === "list")
-    // {
-        // document.write("list detected!!!");
     const left_boundary = road_boundary_left[0];   // top left road boundary, has same x value of bottom left road boundary
     const right_boundary = road_boundary_right[0]; // top right road boundary, has same x value of bottom right road boundary  
-    // }
 
     // let left_boundary = road_boundary_left;
     // let right_boundary = road_boundary_right;
@@ -112,7 +106,8 @@ function playerCarIntersectRoad(sensor, road_boundary_left, road_boundary_right,
     {   
         
         // document.write("left intersection dectected");
-        const t = 1- Math.abs((left_boundary.x - end_point.x) / (left_boundary.x + end_point.x));
+        // const t = 1- Math.abs((left_boundary.x - end_point.x) / (left_boundary.x + end_point.x));
+        const t = 1- Math.abs((left_boundary.x - end_point.x) / (left_boundary.x + end_point.x)) -0.4;
         // t was originally a constant 0.4
 
         // computes the amount of sensor crossing road left boundary 
@@ -123,7 +118,7 @@ function playerCarIntersectRoad(sensor, road_boundary_left, road_boundary_right,
 
     if (parseInt(end_point.x) > parseInt(right_boundary.x- car.width-5))
     {        
-        const t = Math.abs((left_boundary.x - end_point.x) / (left_boundary.x + end_point.x));
+        const t = Math.abs((right_boundary.x - end_point.x) / (right_boundary.x + end_point.x)) +0.4;
 
         // computes the amount of sensor crossing road right boundary 
         return {x: linear_interpolation(start_point.x, end_point.x, t),
