@@ -22,149 +22,143 @@
             <!-- <img width="20" height="20" src="carAvatar.png"/> -->
         </canvas>
 
+            <div id="learningRate">
+                <label><b>Learning Rate</b></label>
+                <input type="range" id="lr_slider" min="1" max="100" value="50">
+            </div>
 
-            <!-- <script>
-                const canvas = document.getElementById("car_game_design");
-                const context = canvas.getContext("2d");
-                // document.write(context);
-                const lr_slider = document.getElementById("lr_slider"); // get the learning rate slider
-                const height = 150;
-                const width = 550;
-                // document.write(canvas.height);
-                var gameState = "highway";
-                // document.write(context);
-                // RESOLVED ERROR!!
-                context.fillStyle = "lime";
-                // document.write(parseInt(canvas.width/4));
-                context.fillRect(0, 0, width/4, height);
-                context.fillStyle = "lime";
-                context.fillRect(0, 0, width/4, height);
-                context.fillStyle = "lime";
-                context.fillRect(3*width/4, 0, width/4, height);
-                context.fillStyle = "#AFAFAF";
-                context.fillRect(width/4, 0, width/2, height);
-                // document.write(context);
-            </script> -->
+            <!--FIX THE GRID DISPLAY SO THE CONTAINERS DON'T LOOK WEIRD ON THE WEBSITE-->
+            <!--Future update will try to highlight one particular cell at a time
+            to help the middle schoolers to see which cell in the Q-learning 
+            process is being updated-->
+            <!-- <tr id="actions"> -->
+
+            <div id="Qtable">
+                <label style="color:black">Q TABLE</label>
+                
+                <table style="width:500px" id="q_table">
+                    <tr id="all_actions">
+                        <th id="title">State, Action</th>
+                        <th id="action1">Forward</th>
+                        <th id="action2">Backward</th>
+                        <th id="action3">Left</th>
+                        <th id="action4">Right</th>
+                        <th id="action5">Stop</th>
+                    </tr>
+                    <tr>
+                        <td id="state1">Car Detected</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td id="state2">Road Border Detected</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td id="state3">Collision</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td id="state4">Nothing Detected</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                </table>    
+            </div>
+
+            <div id="RewardTable">
+                <table id="reward_table">
+                    <label style="color:black">REWARD TABLE</label>
+                    
+                    <tr >
+                        <td>State, Action</td>
+                        <td>Forward</td>
+                        <td>Backward</td>
+                        <td>Left</td>
+                        <td>Right</td>
+                        <td>Stop</td>
+                    </tr>
+                    <tr>
+                        <td>Car Detected</td>
+                        <td><input type="text" width="2px" height="2px" value="-5"></td>
+                        <td><input type="text" width="2px" height="2px" value="-5"></td>
+                        <td><input type="text" width="2px" height="2px" value="5"></td>
+                        <td><input type="text" width="2px" height="2px" value="5"></td>
+                        <td><input type="text" width="2px" height="2px" value="-2"></td>
+                    </tr>
+                    <tr>
+                        <td>Road Border Detected</td>
+                        <td><input type="text" width="2px" height="2px" value="5"></td>
+                        <td><input type="text" width="2px" height="2px" value="5"></td>
+                        <td><input type="text" width="2px" height="2px" value="-5"></td>
+                        <td><input type="text" width="2px" height="2px" value="-5"></td>
+                        <td><input type="text" width="2px" height="2px" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td>Collision</td>
+                        <td><input type="text" width="2px" height="2px" value="-10"></td>
+                        <td><input type="text" width="2px" height="2px" value="-10"></td>
+                        <td><input type="text" width="2px" height="2px" value="-10"></td>
+                        <td><input type="text" width="2px" height="2px" value="-10"></td>
+                        <td><input type="text" width="2px" height="2px" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Nothing Detected</td>
+                        <td><input type="text" width="2px" height="2px" value="15"></td>
+                        <td><input type="text" width="2px" height="2px" value="5"></td>
+                        <td><input type="text" width="2px" height="2px" value="5"></td>
+                        <td><input type="text" width="2px" height="2px" value="5"></td>
+                        <td><input type="text" width="2px" height="2px" value="5"></td>
+                    </tr>
+                </table>
+            </div>
+
             <script src="utils.js"></script>
+            <script src="reinforcementLearning.js"></script>
             <script src="carSensors.js"></script>
             <script src="simulationControls.js"></script>
             <script src="simulationRoad.js"></script>
             <script src="simulationCar.js"></script>
             <script src="simulationGame.js"></script>
+
             <!-- ORDER MATTERS WHEN PUTTING THE JAVASCRIPT FILES -->
             <!--WHENEVER RUNNING CODE MAKE SURE TO TYPE THE NAME OF HTML FILE INTO WINDOWS COMMAND PROMPT-->
     </div>
-    <!--FIX THE GRID DISPLAY SO THE CONTAINERS DON'T LOOK WEIRD ON THE WEBSITE-->
-    <div id="Qtable">
-        <label style="color:black">Q TABLE</label>
-        <!--Future update will try to highlight one particular cell at a time
-            to help the middle schoolers to see which cell in the Q-learning 
-            process is being updated-->
-        <table style="width:500px" id="q_table">
-            <!-- <tr id="actions"> -->
-            <tr>
-                <th>State, Action</th>
-                <th>Forward</th>
-                <th>Backward</th>
-                <th>Left</th>
-                <th>Right</th>
-                <th>Stop</th>
-            </tr>
-            <tr>
-                <td>Car Detected</td>
-                <!--Qtable Values for taking an action in the highway game state-->
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>Road Border Detected</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>Collision</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>Nothing Detected</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-        </table>    
-    </div>
     
-    <div id="RewardTable">
-        
-        <!-- <label>Reward Table</label> -->
-        <table id="reward_table">
-            <label style="color:black">REWARD TABLE</label>
-            <!--In order to distinguish between the data cells will need
-                to make an id for each one so that you can update the values
-                later on-->
-            <tr >
-                <td>State, Action</td>
-                <td>Forward</td>
-                <td>Backward</td>
-                <td>Left</td>
-                <td>Right</td>
-                <td>Stop</td>
-            </tr>
-            <tr>
-                <td>Car Detected</td>
-                <td><input type="text" width="2px" height="2px" value="-5"></td>
-                <td><input type="text" width="2px" height="2px" value="-5"></td>
-                <td><input type="text" width="2px" height="2px" value="5"></td>
-                <td><input type="text" width="2px" height="2px" value="5"></td>
-                <td><input type="text" width="2px" height="2px" value="-2"></td>
-            </tr>
-            <tr>
-                <td>Road Border Detected</td>
-                <td><input type="text" width="2px" height="2px" value="5"></td>
-                <td><input type="text" width="2px" height="2px" value="5"></td>
-                <td><input type="text" width="2px" height="2px" value="-5"></td>
-                <td><input type="text" width="2px" height="2px" value="-5"></td>
-                <td><input type="text" width="2px" height="2px" value="5"></td>
-            </tr>
-            <tr>
-                <td>Collision</td>
-                <td><input type="text" width="2px" height="2px" value="-10"></td>
-                <td><input type="text" width="2px" height="2px" value="-10"></td>
-                <td><input type="text" width="2px" height="2px" value="-10"></td>
-                <td><input type="text" width="2px" height="2px" value="-10"></td>
-                <td><input type="text" width="2px" height="2px" value="0"></td>
-            </tr>
-            <tr>
-                <td>Nothing Detected</td>
-                <td><input type="text" width="2px" height="2px" value="15"></td>
-                <td><input type="text" width="2px" height="2px" value="5"></td>
-                <td><input type="text" width="2px" height="2px" value="5"></td>
-                <td><input type="text" width="2px" height="2px" value="5"></td>
-                <td><input type="text" width="2px" height="2px" value="5"></td>
-            </tr>
-        </table>
-    </div>
+    
 
     <!--Makes a slider for the learning rate-->
-    <div id="learningRate">
-        <!--Can't use decimal values, too small for slider-->
-        <!--well divide the lr_slider element value by 10-->
+    <!--Can't use decimal values, too small for slider-->
+    <!--well divide the lr_slider element value by 10-->
+
+    <!-- <div id="learningRate">
         <label><b>Learning Rate</b></label>
         <input type="range" id="lr_slider" min="1" max="100" value="50">
+    </div> -->
 
-    </div>
+    <!-- <script src="utils.js"></script>
+    <script src="reinforcementLearning.js"></script>
+    <script src="carSensors.js"></script>
+    <script src="simulationControls.js"></script>
+    <script src="simulationRoad.js"></script>
+    <script src="simulationCar.js"></script>
+    <script src="simulationGame.js"></script> -->
+
+
     <!--<div class="grid-container-simulation_zone">
         <div id="tables">
             

@@ -1,22 +1,15 @@
 class reinforcementLearning
 {
-    // constructor(states, actions, learning_rate, gamma, rewards)
+    // constructor(learning_rate, gamma, rewards)
     constructor()
     {
-        // ITS NOT GETTING INSIDE THE reinforcementLearning constructor method
-        // document.write("in constructor of reinforcement learning");
-
-
-
-
-        // this.states = this.#getStates();                       // array of possible states for the car
-        // this.actions = this.#getActions();                     // array of possible actions for the car
-        this.states = ["Car Detected", "Road Border Detected", "Collision", "Nothing Detected"];
-        this.actions = ["Forward", "Backward", "Left", "Right", "Stop"];
-        
-        this.learning_rate = this.#getLearningRate();         // learning rate for the q learning process
+        this.num_states = 4;
+        this.num_actions = 5;
+        this.states = this.#getStates();                 // array of possible states for the car
+        this.actions = this.#getActions();               // array of possible actions for the car
+        this.learning_rate = this.#getLearningRate();     // learning rate for the q learning process
         this.gamma = 0.9;   // NEED TO FIGURE OUT WHAT THIS VALUE IS SUPPOSED TO BE
-        this.reward_matrix = rewards;               // 2D matrix of all state, action pairings
+        this.reward_matrix = this.#getRewards();               // 2D matrix of all state, action pairings
         this.qTable = this.#createQTable();         // initializes an all zero 2D matrix for qTable
         this.policy = new Map();                    // empty mapping of optimal action for car to take given a state
         this.current_action = "forward";            // current action for player car to take
@@ -41,97 +34,100 @@ class reinforcementLearning
 
     #getActions()
     {
-        let table = document.getElementById("q_table");
-        let cell = table.getElementById("th");
-        let website_document = document.getElementById("simulation");
+        let actions = [];
 
-        for (let i=0; i<cell.length;i++)
+        // loop through each column of table to get the actions for the game
+        for (let index = 0; index < this.num_actions; index++)
         {
-            const data_value = cell[i].innerHTML;
-            document.write(i, "th data value: ", data_value);
+            let action_number = index + 1
+            let id_name = "action" + action_number.toString(); // figure out if this is the accurate
+            let table = document.getElementById(id_name);
             
-            
-            // if (type())
-            // need to check the type of data value
-            // since data value could be an integer and can't compare string to integer
-            if ("State, Action" === data_value)
-            {
-                continue;
-            } 
+            let data = table.innerHTML;
+            let action = "";
 
- 
+            for (let i = 0; i < data.length; i++)
+            {
+                const data_value = data[i];
+                action = action + data_value;
+            }
+
+            actions.push(action);
         }
-        // website_document.innerHTML = "I can write to the website";
+
+        return actions;
     }
 
     #getStates()
     {
-        let table = document.getElementById("q_table");
-        let cell = table.getElementById("tr");
-        let website_document = document.getElementById("simulation");
-
-        for (let i=0; i<cell.length;i++)
+        let states = [];
+        
+        for (let number = 0; number < this.num_states; number++)
         {
-            const data_value = cell[i].innerHTML;
-            document.write(i, "th data value: ", data_value);
-            
-            
-            // if (type())
-            // need to check the type of data value
-            // since data value could be an integer and can't compare string to integer
-            if ("State, Action" === data_value)
-            {
-                continue;
-            } 
-
- 
+            let state_number = number + 1;
+            let state_name = "state" + state_number.toString();
+            let table = document.getElementById(state_name);
+            let data = table.innerHTML;
+            states.push(data);
         }
+
+        return states;
     }
 
     #getRewards()
     {
-        let table = document.getElementById("q_table");
-        let cell = table.getElementById("tr");
-        let website_document = document.getElementById("simulation");
+        // let table = document.getElementById("reward_table");
+        // let cell = table.getElementById("tr");
+        let rewards = [];
 
-        for (let i=0; i<cell.length;i++)
+
+        // WORK ON RETRIEVING VALUES FROM THE 
+        // REWARD TABLE AND MAKE SURE TO ADD
+        // ID'S TO THE HTML SO THAT ITS 
+        // EASY TO GET THE ELEMENT DATA
+
+
+        // for (let i=0; i<cell.length;i++)
+        for (let row=0; row < this.states; row++)
         {
-            const data_value = cell[i].innerHTML;
-            document.write(i, "th data value: ", data_value);
-            
-            
-            // if (type())
-            // need to check the type of data value
-            // since data value could be an integer and can't compare string to integer
-            if ("State, Action" === data_value)
+            for (let col=0; col < this.actions; col++)
             {
-                continue;
-            } 
+                let row_number = row
+                let column_number = col
+                let data_cell = column_number.toString() + "_" + row_number.toString(); 
+                let data = document.getElementById(data_cell);
+            }            
+    
 
- 
+
+
         }
+
+        return rewards
     }
 
     #getLearningRate()
     {
-        document.write("I am in get the learning rate function!!!");
         let slider = document.getElementById("lr_slider");
-        let website_document = document.getElementById("simulation"); // need to determine if this is the accurate name 
+        // let website_document = document.getElementById("simulation"); // need to determine if this is the accurate name 
                                                                       // might have to be document title or a div container id name
+        
+        // website_document is undefined, wrong id name
         const learning_rate = slider.value / 100;
-        document.write("I am got the learning rate!!!");
 
         // get learning rate from slider
         return learning_rate
     }
-    
 
     #updateValues()
     {
         // updates learning rate based on slider value
-        let website_document = document.getElementById("simulation");
+        // let website_document = document.getElementById("simulation");
         let slider = document.getElementById("lr_slider");
-        this.learning_rate = slider.value;
+        this.learning_rate = slider.value / 100;
+
+        // will need to use 
+        // .getElementById("").innerHTML = value
 
         slider.oninput = function(){
 
@@ -158,6 +154,7 @@ class reinforcementLearning
         return q_matrix;
     }
 
+    // need to make a time step function to be able to make a time step to the next state
     updateState(sensedObject)
     {
         // objects that can be detected!!
@@ -231,8 +228,7 @@ class reinforcementLearning
             this.qTable[row][col] = (1 - this.learning_rate) * current_q_value +
                                     this.learning_rate* (reward + this.gamma);
         }
-        //     }   
-        // }   
+       
     }
 
     // Later add in a function that makes a txt file with
