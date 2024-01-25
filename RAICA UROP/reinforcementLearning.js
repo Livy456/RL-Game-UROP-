@@ -32,7 +32,36 @@ class reinforcementLearning
         // what action to take if multiple things are sensed/detected
     }
 
-    #getActions()
+    #getActions(num_actions)
+    {
+        // document.write("entered get actions function in reinforcement learning class!!");
+        let actions = [];
+        // let table = document.getElementById("q_table");
+
+        // loop through each column of table to get the actions for the game
+        for (let index = 0; index < num_actions; index++)
+        {
+            let action_number = index + 1
+            let id_name = "action" + action_number.toString(); // figure out if this is the accurate
+            let table = document.getElementById(id_name);
+            
+            let data = table.innerHTML;
+            let data_element = "";
+
+    
+            for (let i = 0; i < data.length; i++)
+            {
+                const data_value = data[i];
+                data_element = data_element + data_value;
+            }
+
+            actions.push(data_element);
+        }
+
+        return actions;
+    }
+
+    #getState(num_states)
     {
         let actions = [];
 
@@ -106,6 +135,7 @@ class reinforcementLearning
         return rewards
     }
 
+    // SUCCESSFULLY GETS THE LEARNING RATE OF THE SLIDER
     #getLearningRate()
     {
         let slider = document.getElementById("lr_slider");
