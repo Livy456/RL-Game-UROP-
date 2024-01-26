@@ -1,10 +1,12 @@
 class reinforcementLearning
 {
     // constructor(learning_rate, gamma, rewards)
+    // constructor(car)
     constructor()
     {
         this.num_states = 4;
         this.num_actions = 5;
+        // this.car = car;
         // document.write("I am being constructed");
         this.states = this.#getStates();                 // array of possible states for the car
         this.actions = this.#getActions();               // array of possible actions for the car
@@ -56,7 +58,6 @@ class reinforcementLearning
             let data = table.innerHTML;
             let data_element = "";
 
-    
             for (let i = 0; i < data.length; i++)
             {
                 const data_value = data[i];
@@ -91,33 +92,25 @@ class reinforcementLearning
 
         // the table is a 4 x 5 (row x col) or (state x actions)
         // document.write("inside get rewards function")
-        // document.write("number of actions: ", this.num_actions);
-        // for (let row=0; row < this.num_actions; row++)
 
-        // document.write("(0,4): ", document.getElementById("0,4").value);
-        for (let row=0; row < 5; row++)
+        for (let row=0; row < this.num_states; row++)
         {
             let reward_row = [];
             
-            // document.write("number of states: ", this.num_states);
-            for (let col=0; col < this.num_states; col++)
+            for (let col=0; col < this.num_actions; col++)
             {
-                // let row_number = row
-                // let column_number = col
-                // let data_cell = row_number.toString() + "," + column_number.toString(); 
-                // document.write("about to convert from number to string");
+
                 let data_cell = row.toString() + "," + col.toString();
                 let data = document.getElementById(data_cell).value;
-                document.write(" (", row, ", ", col, ")  ");
+                // document.write(" (", row, ", ", col, ")  ");
                 // document.write("    data: ", data);
 
                 reward_row.push(data);
             }
-            document.write("    I made that push: ", reward_row);
             reward_matrix.push(reward_row);
     
         }
-        document.write("reward matrix: ", reward_matrix);
+        // document.write("OUT OF THE LOOP!!!! reward matrix: ", reward_matrix);
 
         return reward_matrix
     }
@@ -134,35 +127,24 @@ class reinforcementLearning
     #updateValues()
     {
         // updates learning rate based on slider value
-        // let website_document = document.getElementById("simulation");
         let slider = document.getElementById("lr_slider");
         this.learning_rate = slider.value / 100;
 
         // update q table values and retrieves any new reward values from reward table
-        for (let row=0; row < this.num_actions; row++)
+        for (let row=0; row < this.num_states; row++)
         {
-            for (let col=0; col < this.num_states; col++)
+            for (let col=0; col < this.num_actions; col++)
             {
                 let data_cell = row.toString() + "_" + col.toString();
                 let reward_cell = row.toString() + "," + col.toString();
 
-                document.write("    cell data: ", this.qTable[row][col], "      ")
                 // updating q table value
-                document.getElementById(data_cell).innerHTML = this.qTable[row][col]
+                document.getElementById(data_cell).innerHTML = Math.floor(this.qTable[row][col])
 
-                document.write("    reward matrix value: ", this.reward_matrix[row][col], "    ");
                 // retrieving new reward table value
                 this.reward_matrix[row][col] = document.getElementById(reward_cell).value;
-                document.write("no reward value retrieval");
             }
         }
-
-        // will need to use 
-        // .getElementById("").innerHTML = value
-
-        // slider.oninput = function(){
-
-        // }
 
     }
 
@@ -193,8 +175,9 @@ class reinforcementLearning
     }
 
     // need to make a time step function to be able to make a time step to the next state
-    updateState(sensedObject)
+    #updateState()
     {
+        let state;
         // objects that can be detected!!
         if(sensedObject == "Left Road Border")
         {
@@ -214,25 +197,34 @@ class reinforcementLearning
     //     this.current_action = action; // send this to the car controls
     // }
 
-    #optimalQValue(transition_state_index)
+    // #optimalQValue(transition_state_index)
+    #optimalQValue()
     {
-        let optimal_action = "Forward";
-        let optimal_reward = 0;
+        let optimal_action = "Backward";
+        // let optimal_reward = 0;
         let max_qvalue = -100;
 
-        for (let action_index = 0; action_index < this.actions.length; action_index++)
+        // need to add a 
+        // let state_index = 0 // check if the sensors have sensed anything
+        // let new_state_index = this.#updateState(state)
+
+        // selects a random state to transition to 
+        let transition_state_index = Math.floor(Math.random()*this.states.length);
+        // document.write("transition state index: ", transition_state_index);
+
+        for (let action_index = 0; action_index < this.num_actions; action_index++)
         {
-            const q_value = this.qTable[action_index][transition_state_index];
+            const q_value = this.qTable[transition_state_index][action_index];
             
             if(max_qvalue < q_value)
             {
                 max_qvalue = q_value
-                optimal_action = this.actions
+                optimal_action = this.actions[action_index]
             }
         }
 
         // returns a tuple of optimal action to take a given state and corresponding rewards
-        return optimal_action, optimal_reward
+        return optimal_action
     }
     // chooses an action to take given the current state
     #chooseAction()
@@ -246,43 +238,50 @@ class reinforcementLearning
 
     Qlearning()
     {
-
-        // for (let row=0; row<this.states.length; row++)
-        // {
-        //     for (let col=0; col <this.actions.length;col++)
-        //     {
-
-        // runs q learning algorithm until 
-        // the qtable converges to a specific value
-        // NEED TO FIGURE OUT A WAY TO DEFINE QTABLE VALUES CONVERGING TO A SPECIFIC VALUE
-        // FOR NOW NEED TO CHECK IF THE OPTIMAL Q TABLE HAS THE SAME NUMBER OF STATES
-        // SINCE YOU WANT TO FIND THE POLICY -> FINDING OPTIMAL ACTION TO TAKE THAT WILL MAX REWARD AT GIVEN STATE
-        // while ((this.policy.size < this.states.length) || (this.current_state == "Collision"))
         if (this.current_state !== "Collision")
         {
-            document.write("there's a collision");
+            // document.write("    there's no collision!!!   ");
             this.#updateValues(); // updates the learning rate, reward table values and qtable values
 
-            document.write("values have been updated");
-            const col = this.state_index_mapping.get(this.current_state);
+            // document.write("values have been updated");
+            // this.current_state = this.#updateState();
+            const state_index = this.state_index_mapping.get(this.current_state);
             this.current_action = this.#chooseAction(); // MAKE SURE TO DEFINE THIS
-            const row = this.action_index_mapping.get(this.current_action);
+            const action_index = this.action_index_mapping.get(this.current_action);
+
+            // document.write("   state index, action index pair: (", state_index, ", ", action_index, ")  " )
+
+            // resets all the actions
             this.actions_to_take.forEach((action, boolean_value) => {
                 this.actions_to_take.set(action, false);
             });
-            this.actions_to_take.set(this.current_action, true);
-            // NEED TO SET THE OTHER ACTIONS TO FALSE
             
-            const reward = this.reward_matrix[row][col]
-            const current_q_value = this.qTable[row][col]
-            const optimal_entry = this.#optimalQValue(transition_state);
-            const optimal_action = optimal_entry[0];
-            const optimal_reward = optimal_entry[1];
-            this.qTable[row][col] = (1 - this.learning_rate) * current_q_value +
+            // NEED TO UPDATE THE ACTION TO TAKE BASED ON THE 
+            // document.write(" row, col: (", state_index, ", ", action_index, ") ")
+            const reward = this.reward_matrix[state_index][action_index]
+            // document.write(" reward: ", reward);
+
+            const current_q_value = this.qTable[state_index][action_index]
+            // document.write(" current q value: ", current_q_value);
+
+            // let transition_state = state_index;
+            // const optimal_action =  this.#optimalQValue(transition_state);
+            const optimal_action = this.#optimalQValue();
+
+            this.actions_to_take.set(optimal_action, true);
+            this.qTable[state_index][action_index] = (1 - this.learning_rate) * current_q_value +
                                     this.learning_rate* (reward + this.gamma);
         }
        
     }
+
+
+    // runs q learning algorithm until 
+    // the qtable converges to a specific value
+    // NEED TO FIGURE OUT A WAY TO DEFINE QTABLE VALUES CONVERGING TO A SPECIFIC VALUE
+    // FOR NOW NEED TO CHECK IF THE OPTIMAL Q TABLE HAS THE SAME NUMBER OF STATES
+    // SINCE YOU WANT TO FIND THE POLICY -> FINDING OPTIMAL ACTION TO TAKE THAT WILL MAX REWARD AT GIVEN STATE
+    // while ((this.policy.size < this.states.length) || (this.current_state == "Collision"))
 
     // Later add in a function that makes a txt file with
     // previous run throughs of the the reinforcement learning

@@ -7,12 +7,15 @@ class SimulationCar{
         this.height = height; // height of car
         
         this.player = player; // boolean value indicating if car is player or not
-        this.damaged = false;   // confirms whether the car is damaged or not
-        // document.write("Before I instantiated rl");
-        this.learning = new reinforcementLearning(); // A LOT OF ERROR PRODUCED FROM THE REINFORCEMENT LEARNING CLASS
-        // document.write("Before I instantiated rl");
+        this.damaged = false;   // confirms whether the car is damaged or not        
+        // this.learning = new reinforcementLearning(); 
+
 
         this.car_sensors = new Sensor(this); // creates sensor object using car instance
+        this.learning = new reinforcementLearning(this); 
+        // document.write("Before I instantiated rl");
+
+        
         this.controls = new Controls(player); // no controls for non player cars
         // this.car_points = this.#createPoints();
         // if (player)
@@ -113,11 +116,24 @@ class SimulationCar{
     // movePosition(road_boundaries, top, bottom)
     #movePosition()
     {
+        // document.write("I made it in the move position function in simulation car!!!");
+        this.learning.Qlearning();
+        
+        // default movement for a non player character is forward
+        if (! this.player)
+        {
+            this.y-=0.5;
+        }
+
         // moves the car object's x and y positions
         // bound the carPlayer to the grey road
         // if (this.controls.forward && car.y > 0)
         // if (this.controls.forward && car.y > top)
-        if (this.controls.forward)
+        
+        
+    
+        // if (this.controls.forward)
+        if(this.player && (this.learning.actions_to_take.get("Forward")))
         {
             if(this.player)
             {
@@ -131,17 +147,24 @@ class SimulationCar{
                 this.y-=0.5;
             }
         }
-
         // bound the carPlayer to the grey road
         // if (this.controls.right && car.x +car.width < (3*WIDTH/4))
-        if (this.controls.right)
+        
+
+        
+        if ( this.player && (this.learning.actions_to_take.get("Right")))
+        // if (this.controls.right)
         {
             this.x+=2;
         }
 
         // bound the carPlayer to the grey road
         // if (this.controls.backward && car.y + car.height <= bottom)
-        if (this.controls.backward)
+        
+        
+
+        if (this.player && (this.learning.actions_to_take.get("Backward")))
+        // if (this.controls.backward)
         {
             this.y+=1;
         }
@@ -149,7 +172,11 @@ class SimulationCar{
         // bound the carPlayer to the grey road
         //if (this.controls.left && car.x > (WIDTH/4) + HIGHWAY_LINE_WIDTH)
         //if (this.controls.left && car.x > (WIDTH/4))
-        if (this.controls.left)
+        
+        
+
+        if (this.player && (this.learning.actions_to_take.get("Left")))
+        // if (this.controls.left)
         {
             this.x-=2;
         }
