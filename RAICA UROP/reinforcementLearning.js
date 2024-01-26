@@ -250,39 +250,39 @@ class reinforcementLearning
     // chooses an action to take given the current state
     #chooseAction(state)
     {
-        // // gets a random number from 0 to number of actions - 1
-        // const random_action_index = Math.floor(Math.random() * this.actions.length); 
+        // gets a random number from 0 to number of actions - 1
+        const random_action_index = Math.floor(Math.random() * this.actions.length); 
 
-        // return this.actions[random_action_index];
+        return this.actions[random_action_index];
 
 
-        let new_action  = "";
+        // let new_action  = "";
 
-        if(state == "Left Object Intersection")
-        {
-            new_action = "Right"; 
-        }
+        // if(state == "Left Object Intersection")
+        // {
+        //     new_action = "Right"; 
+        // }
 
-        else if(state === "Right Object Intersection")
-        {
-            new_action = "Left";
-        }
+        // else if(state === "Right Object Intersection")
+        // {
+        //     new_action = "Left";
+        // }
 
-        else if(state === "Object Intersection in Front")
-        {
-            new_action = "Backward";
-        }
+        // else if(state === "Object Intersection in Front")
+        // {
+        //     new_action = "Backward";
+        // }
 
-        else if (state === "Object Intersection Behind")
-        {
-            new_action = "Forward";
-        }
+        // else if (state === "Object Intersection Behind")
+        // {
+        //     new_action = "Forward";
+        // }
 
-        else
-        {
-            new_action = "Forward";
-        }
-        return new_action
+        // else
+        // {
+        //     new_action = "Forward";
+        // }
+        // return new_action
     }
 
     Qlearning()
