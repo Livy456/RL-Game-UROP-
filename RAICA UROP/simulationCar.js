@@ -10,12 +10,10 @@ class SimulationCar{
         this.damaged = false;   // confirms whether the car is damaged or not        
         // this.learning = new reinforcementLearning(); 
 
-
         this.car_sensors = new Sensor(this); // creates sensor object using car instance
-        this.learning = new reinforcementLearning(this); 
+        this.learning = new reinforcementLearning(this.car_sensors); 
         // document.write("Before I instantiated rl");
 
-        
         this.controls = new Controls(player); // no controls for non player cars
         // this.car_points = this.#createPoints();
         // if (player)
@@ -135,17 +133,18 @@ class SimulationCar{
         // if (this.controls.forward)
         if(this.player && (this.learning.actions_to_take.get("Forward")))
         {
-            if(this.player)
-            {
-                this.y-=1;
-            }
+            this.y -= 0.6
+            // if(this.player)
+            // {
+            //     this.y-=1;
+            // }
 
             // makes other car object move at half the speed of player
             // traffic can only move forward 
-            else
-            {
-                this.y-=0.5;
-            }
+            // else
+            // {
+            //     this.y-=0.5;
+            // }
         }
         // bound the carPlayer to the grey road
         // if (this.controls.right && car.x +car.width < (3*WIDTH/4))

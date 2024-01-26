@@ -1,6 +1,10 @@
 // main javascript file
 const canvas = document.getElementById("car_game_design");
-const lr_slider = document.getElementById("lr_slider"); // get the learning rate slider
+
+
+// const lr_slider = document.getElementById("lr_slider"); // get the learning rate slider
+
+
 const context = canvas.getContext("2d");
 
 let gameState = "highway";

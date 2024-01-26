@@ -1,12 +1,12 @@
 class reinforcementLearning
 {
     // constructor(learning_rate, gamma, rewards)
-    // constructor(car)
-    constructor()
+    constructor(sensor)
+    // constructor()
     {
         this.num_states = 4;
         this.num_actions = 5;
-        // this.car = car;
+        this.sensor = sensor;
         // document.write("I am being constructed");
         this.states = this.#getStates();                 // array of possible states for the car
         this.actions = this.#getActions();               // array of possible actions for the car
@@ -46,7 +46,6 @@ class reinforcementLearning
     {
         // document.write("entered get actions function in reinforcement learning class!!");
         let actions = [];
-        // let table = document.getElementById("q_table");
 
         // loop through each column of table to get the actions for the game
         for (let index = 0; index < this.num_actions; index++)
@@ -90,9 +89,8 @@ class reinforcementLearning
     {
         let reward_matrix = [];
 
-        // the table is a 4 x 5 (row x col) or (state x actions)
-        // document.write("inside get rewards function")
-
+        // table is a 4 x 5 (row x col) or (state x actions)
+        // iterate through the table to get the reward values
         for (let row=0; row < this.num_states; row++)
         {
             let reward_row = [];
@@ -102,15 +100,12 @@ class reinforcementLearning
 
                 let data_cell = row.toString() + "," + col.toString();
                 let data = document.getElementById(data_cell).value;
-                // document.write(" (", row, ", ", col, ")  ");
-                // document.write("    data: ", data);
 
                 reward_row.push(data);
             }
             reward_matrix.push(reward_row);
     
         }
-        // document.write("OUT OF THE LOOP!!!! reward matrix: ", reward_matrix);
 
         return reward_matrix
     }
@@ -168,34 +163,60 @@ class reinforcementLearning
             q_matrix.push(q_row);
         }
 
-
-        // document.write("inside initialize q table function, qtable: ", q_matrix, "     ");
-
         return q_matrix;
     }
 
     // need to make a time step function to be able to make a time step to the next state
     #updateState()
     {
-        let state;
-        // objects that can be detected!!
-        if(sensedObject == "Left Road Border")
+        let state = "Nothing Detected";
+
+        for (let i=0; i < this.sensor.num_sensors; i++)
         {
-            this.current_action = "Right"; // MODIFY THIS SO THAT I AM NOT ENCODING THE POLICY FOR THE CAR
+            // document.write("I am checking sensor readings!!!   ");
+            // check if sensor intersected something
+            if (this.sensor.sensor_readings[i])
+            {
+                // document.write("Hello there sensor reading!!!");
+                // let start = this.sensors[i][0];
+                let end = this.sensor.sensors[i][1];
+
+                // check if object intersection is to left of the car
+                if (end.x < this.sensor.car.car_points[0].x)
+                {
+                    state = "Left Object Intersection";
+                    this.current_state = "Road Border Detected";
+                }
+
+                // check if object intersection is to right of the car
+                if (end.y < this.sensor.car.car_points[0].y)
+                {
+                    state = "Object Intersection in Front";
+                    this.current_state = "Car Detected";
+
+
+                    // document.write("I have detected a car in front of me!!!!");
+                }
+
+                // check 
+                if (end.x > this.sensor.car.car_points[1].x)
+                {
+                    state = "Right Object Intersection";
+                    this.current_state = "Road Border Detected";
+                }
+
+                if (end.y > this.sensor.car.car_points[1].y)
+                {
+                    state = "Object Intersection Behind";
+                    this.current_state = "Car Detected";
+                }
+
+                break;
+            }
         }
 
-        else if(sensedObject == "Right Road Border")
-        {
-            this.current_action = "Left";
-        }
+        return state
     }
-
-    // NEED TO FIND A WAY TO SEND THIS TO CAR CONTROLS SO THAT 
-    // CAR CAN MOVE FORWARD IF ACTION = "Forward"
-    // updateAction(action)
-    // {
-    //     this.current_action = action; // send this to the car controls
-    // }
 
     // #optimalQValue(transition_state_index)
     #optimalQValue()
@@ -227,26 +248,52 @@ class reinforcementLearning
         return optimal_action
     }
     // chooses an action to take given the current state
-    #chooseAction()
+    #chooseAction(state)
     {
-        // gets a random number from 0 to number of actions - 1
-        const random_action_index = Math.floor(Math.random() * this.actions.length); 
+        // // gets a random number from 0 to number of actions - 1
+        // const random_action_index = Math.floor(Math.random() * this.actions.length); 
 
-        // MIGHT NEED TO INCORPORATE THE SENSED OBJECT INTO THIS 
-        return this.actions[random_action_index];
+        // return this.actions[random_action_index];
+
+
+        let new_action  = "";
+
+        if(state == "Left Object Intersection")
+        {
+            new_action = "Right"; 
+        }
+
+        else if(state === "Right Object Intersection")
+        {
+            new_action = "Left";
+        }
+
+        else if(state === "Object Intersection in Front")
+        {
+            new_action = "Backward";
+        }
+
+        else if (state === "Object Intersection Behind")
+        {
+            new_action = "Forward";
+        }
+
+        else
+        {
+            new_action = "Forward";
+        }
+        return new_action
     }
 
     Qlearning()
     {
         if (this.current_state !== "Collision")
         {
-            // document.write("    there's no collision!!!   ");
             this.#updateValues(); // updates the learning rate, reward table values and qtable values
+            let new_state = this.#updateState();
 
-            // document.write("values have been updated");
-            // this.current_state = this.#updateState();
             const state_index = this.state_index_mapping.get(this.current_state);
-            this.current_action = this.#chooseAction(); // MAKE SURE TO DEFINE THIS
+            this.current_action = this.#chooseAction(new_state); // MAKE SURE TO DEFINE THIS
             const action_index = this.action_index_mapping.get(this.current_action);
 
             // document.write("   state index, action index pair: (", state_index, ", ", action_index, ")  " )
