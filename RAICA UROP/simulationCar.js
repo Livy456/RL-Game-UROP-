@@ -14,7 +14,10 @@ class SimulationCar{
         this.learning = new reinforcementLearning(this.car_sensors); 
         // document.write("Before I instantiated rl");
 
-        this.controls = new Controls(player); // no controls for non player cars
+        // NO LONGER NEED THE CONTROLS CLASS
+        // this.controls = new Controls(player); // no controls for non player cars
+
+
         // this.car_points = this.#createPoints();
         // if (player)
         // {

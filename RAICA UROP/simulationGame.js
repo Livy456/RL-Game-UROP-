@@ -32,6 +32,8 @@ const traffic = [
     new SimulationCar(WIDTH/2 + 10, -HEIGHT/2, CAR_WIDTH, CAR_HEIGHT, false),
     new SimulationCar(WIDTH/2 + 10, -3*HEIGHT/2, CAR_WIDTH, CAR_HEIGHT, false),
     new SimulationCar(WIDTH/2 + 10, HEIGHT/8, CAR_WIDTH, CAR_HEIGHT, false),
+    // new SimulationCar(WIDTH/2 + 10, HEIGHT/4, CAR_WIDTH, CAR_HEIGHT, false),
+    new SimulationCar(WIDTH/2 + 10, -3* HEIGHT/4, CAR_WIDTH, CAR_HEIGHT, false),
 ];
 
 // MAYBE ADD A BUTTON THAT RESETS THE GAME WHEN THE PLAYER GETS DAMAGED/COLLIDES WITH OTHER OBJECTS

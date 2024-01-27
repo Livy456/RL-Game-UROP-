@@ -7,11 +7,10 @@ class reinforcementLearning
         this.num_states = 4;
         this.num_actions = 5;
         this.sensor = sensor;
-        // document.write("I am being constructed");
         this.states = this.#getStates();                 // array of possible states for the car
         this.actions = this.#getActions();               // array of possible actions for the car
         this.learning_rate = this.#getLearningRate();    // learning rate for the q learning process
-        this.gamma = 0.9;   // NEED TO FIGURE OUT WHAT THIS VALUE IS SUPPOSED TO BE
+        this.gamma = 0.9;   
         this.reward_matrix = this.#getRewards();         // 2D matrix of all state, action pairings
         this.qTable = this.#initializeQTable();                 // initializes an all zero 2D matrix for qTable
         this.policy = new Map();                    // empty mapping of optimal action for car to take given a state
@@ -37,14 +36,10 @@ class reinforcementLearning
             ["Right", 3],
             ["Stop", 4],
         ]);        
-
-        // we have to consider when multiple objects are detected-> results in updated state
-        // what action to take if multiple things are sensed/detected
     }
 
     #getActions()
     {
-        // document.write("entered get actions function in reinforcement learning class!!");
         let actions = [];
 
         // loop through each column of table to get the actions for the game
@@ -173,12 +168,9 @@ class reinforcementLearning
 
         for (let i=0; i < this.sensor.num_sensors; i++)
         {
-            // document.write("I am checking sensor readings!!!   ");
             // check if sensor intersected something
             if (this.sensor.sensor_readings[i])
             {
-                // document.write("Hello there sensor reading!!!");
-                // let start = this.sensors[i][0];
                 let end = this.sensor.sensors[i][1];
 
                 // check if object intersection is to left of the car
@@ -188,23 +180,23 @@ class reinforcementLearning
                     this.current_state = "Road Border Detected";
                 }
 
-                // check if object intersection is to right of the car
+                // check if object intersection is in front of the car
                 if (end.y < this.sensor.car.car_points[0].y)
                 {
                     state = "Object Intersection in Front";
                     this.current_state = "Car Detected";
 
 
-                    // document.write("I have detected a car in front of me!!!!");
                 }
 
-                // check 
+                // check if object intersection is to right of the car
                 if (end.x > this.sensor.car.car_points[1].x)
                 {
                     state = "Right Object Intersection";
                     this.current_state = "Road Border Detected";
                 }
 
+                // check if object intersection is behind the car
                 if (end.y > this.sensor.car.car_points[1].y)
                 {
                     state = "Object Intersection Behind";
@@ -218,20 +210,13 @@ class reinforcementLearning
         return state
     }
 
-    // #optimalQValue(transition_state_index)
     #optimalQValue()
     {
         let optimal_action = "Backward";
-        // let optimal_reward = 0;
         let max_qvalue = -100;
-
-        // need to add a 
-        // let state_index = 0 // check if the sensors have sensed anything
-        // let new_state_index = this.#updateState(state)
 
         // selects a random state to transition to 
         let transition_state_index = Math.floor(Math.random()*this.states.length);
-        // document.write("transition state index: ", transition_state_index);
 
         for (let action_index = 0; action_index < this.num_actions; action_index++)
         {
@@ -247,6 +232,7 @@ class reinforcementLearning
         // returns a tuple of optimal action to take a given state and corresponding rewards
         return optimal_action
     }
+
     // chooses an action to take given the current state
     #chooseAction(state)
     {
@@ -296,25 +282,16 @@ class reinforcementLearning
             this.current_action = this.#chooseAction(new_state); // MAKE SURE TO DEFINE THIS
             const action_index = this.action_index_mapping.get(this.current_action);
 
-            // document.write("   state index, action index pair: (", state_index, ", ", action_index, ")  " )
-
             // resets all the actions
             this.actions_to_take.forEach((action, boolean_value) => {
                 this.actions_to_take.set(action, false);
             });
             
-            // NEED TO UPDATE THE ACTION TO TAKE BASED ON THE 
-            // document.write(" row, col: (", state_index, ", ", action_index, ") ")
             const reward = this.reward_matrix[state_index][action_index]
-            // document.write(" reward: ", reward);
-
             const current_q_value = this.qTable[state_index][action_index]
-            // document.write(" current q value: ", current_q_value);
-
-            // let transition_state = state_index;
-            // const optimal_action =  this.#optimalQValue(transition_state);
             const optimal_action = this.#optimalQValue();
 
+            // sets the next action to take to be the optimal action based on reward value
             this.actions_to_take.set(optimal_action, true);
             this.qTable[state_index][action_index] = (1 - this.learning_rate) * current_q_value +
                                     this.learning_rate* (reward + this.gamma);
