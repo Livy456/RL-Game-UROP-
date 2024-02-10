@@ -5,7 +5,7 @@ class Sensor
         this.car = car; // car object
         // this.num_sensors = 5; 
         // this.num_sensors = 3
-        this.num_sensors = 30; 
+        this.num_sensors = 31; 
         this.sensor_length = 50;
         // this.sensor_arc = Math.PI/2; // 90 degree angle between sensors
         this.sensor_arc = Math.PI*2; // 360 degree 
@@ -95,6 +95,9 @@ class Sensor
 
             for (let j=0; j < traffic_car.length; j++)
             {
+                
+                // const intersect = playerCarIntersectRoad(sensor, traffic_car[j], traffic_car[(j+1) %traffic_car.length], this.car);
+
                 const intersect = getIntersection(sensor[0], sensor[1], 
                                                   traffic_car[j], traffic_car[(j+1)%traffic_car.length]);
                 if (intersect)

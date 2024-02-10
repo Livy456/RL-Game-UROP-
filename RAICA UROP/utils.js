@@ -106,7 +106,6 @@ function playerCarIntersectRoad(sensor, road_boundary_left, road_boundary_right,
     {   
         
         // document.write("left intersection dectected");
-        // const t = 1- Math.abs((left_boundary.x - end_point.x) / (left_boundary.x + end_point.x));
         const t = 1- Math.abs((left_boundary.x - end_point.x) / (left_boundary.x + end_point.x)) -0.4;
         // t was originally a constant 0.4
 

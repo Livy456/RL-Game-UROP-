@@ -8,19 +8,13 @@ class SimulationCar{
         
         this.player = player; // boolean value indicating if car is player or not
         this.damaged = false;   // confirms whether the car is damaged or not        
-        // this.learning = new reinforcementLearning(); 
 
         this.car_sensors = new Sensor(this); // creates sensor object using car instance
         this.learning = new reinforcementLearning(this.car_sensors); 
-        // document.write("Before I instantiated rl");
 
         // NO LONGER NEED THE CONTROLS CLASS
         // this.controls = new Controls(player); // no controls for non player cars
 
-
-        // this.car_points = this.#createPoints();
-        // if (player)
-        // {
         this.car_points = [
                             {x: this.x - this.width/2,
                             y: this.y - this.height/2}, // top left point of car
@@ -31,21 +25,7 @@ class SimulationCar{
                             {x: this.x + this.width/2,
                             y: this.y + this.height/2}  // bottom right point of car
         ];
-        // } 
-        // else
-        // {
-        //     this.car_points = [
-        //         {x: this.x - this.width/2,
-        //         y: this.y - this.height/2},
-        //         {x: this.x + this.width/2,
-        //         y: this.y - this.height/2},
-        //         {x: this.x - this.width/2,
-        //         y: this.y + this.height/2},
-        //         {x: this.x + this.width/2,
-        //         y: this.y + this.height/2}
-        //     ];
-        // }   
-        
+  
         // might have to change the points of the car to see if this changes  
         // when the player car determines when the intersection occurs
     }
@@ -118,6 +98,9 @@ class SimulationCar{
     #movePosition()
     {
         // document.write("I made it in the move position function in simulation car!!!");
+        // console.time(); // starts the time 
+        // setTimeout(this.learning.Qlearning(), 2000);
+        // console.timeEnd();
         this.learning.Qlearning();
         
         // default movement for a non player character is forward
@@ -134,54 +117,53 @@ class SimulationCar{
         
     
         // if (this.controls.forward)
-        if(this.player && (this.learning.actions_to_take.get("Forward")))
-        {
-            this.y -= 0.6
-            // if(this.player)
-            // {
-            //     this.y-=1;
-            // }
+        // if(this.player && (this.learning.actions_to_take.get("Forward")))
 
-            // makes other car object move at half the speed of player
-            // traffic can only move forward 
-            // else
-            // {
-            //     this.y-=0.5;
-            // }
+        // 0 index corresponds to forward action
+        if(this.player && (this.learning.actions_to_take_array[0]))
+        {
+            this.y -= 0.7
+        
         }
+
+
         // bound the carPlayer to the grey road
         // if (this.controls.right && car.x +car.width < (3*WIDTH/4))
-        
-
-        
-        if ( this.player && (this.learning.actions_to_take.get("Right")))
+        // if ( this.player && (this.learning.actions_to_take.get("Right")))
+        if(this.player && (this.learning.actions_to_take_array[3]))
         // if (this.controls.right)
         {
             this.x+=2;
         }
 
+
+
+
         // bound the carPlayer to the grey road
         // if (this.controls.backward && car.y + car.height <= bottom)
-        
-        
-
-        if (this.player && (this.learning.actions_to_take.get("Backward")))
+        // if (this.player && (this.learning.actions_to_take.get("Backward")))
+        if(this.player && (this.learning.actions_to_take_array[1]))
         // if (this.controls.backward)
         {
-            this.y+=1;
+            this.y+=0.7;
         }
+
+
+
 
         // bound the carPlayer to the grey road
         //if (this.controls.left && car.x > (WIDTH/4) + HIGHWAY_LINE_WIDTH)
         //if (this.controls.left && car.x > (WIDTH/4))
-        
-        
-
-        if (this.player && (this.learning.actions_to_take.get("Left")))
+        // if (this.player && (this.learning.actions_to_take.get("Left")))
+        if(this.player && (this.learning.actions_to_take_array[2]))
         // if (this.controls.left)
         {
             this.x-=2;
         }
+
+        // this.learning.actions_to_take.forEach((action, boolean_value) => {
+        //     this.learning.actions_to_take.set(action, false);
+        // });
     }
 
     updateCar(road_boundaries, traffic)
@@ -199,7 +181,6 @@ class SimulationCar{
             this.#movePosition();
             this.car_points = this.#createPoints();
             this.damaged = this.#isDamaged(road_boundaries, traffic);
-            // if (this.player){
             // document.write("car class, updateCar function, not damaged!!");}
         }
         // this.#movePosition();
@@ -212,20 +193,7 @@ class SimulationCar{
             // document.write("before updating car sensor in car file, update car method");
             this.car_sensors.updateSensor(road_boundaries, traffic);
             console.log(this.car_sensors);
-            // const directions = this.car_sensors;
-            
-
-            // DEFINE A NEW FUNCTION IN REINFORCEMENT LEARNING CLASS
-            // THAT DETECTS WHICH SENSORS HAVE READINGS AND USES THAT INFORMATION
-            // TO PROVIDE A POSITIVE OR NEGATIVE VALUE TO THE DIRECTION OF THE CAR
-            // IF FORWARD IS POSITIVE, THEN MAKE THE CAR MOVE FORWARD,
-            // IF BACKWARD IS POSITIVE, THEN MAKE THE CAR MOVE BACKWARD,
-            // IF RIGHT IS POSITIVE, THEN MAKE THE CAR MOVE RIGHT
-            // IF LEFT IS POSITIVE, THEN MAKE THE CAR MOVE LEFT
-
-            // document.write("car class, updateCar function, I am updating the player car!!");
         }
-        // document.write("car class, update car method, end of the updating car!!");
     }
 
     drawPlayer(ctx)
